@@ -22,6 +22,7 @@ public class AmministratoreController implements Controller {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+
             switch(choice){
                 //todo
             }
