@@ -1,7 +1,6 @@
 package it.crm.bd.model.domain;
 
 public enum Role {
-    AMMINISTRATORE(1),
     SEGRETERIA(2),
     OPERATORE(3);
     private final int id;

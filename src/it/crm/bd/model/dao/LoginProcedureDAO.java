@@ -29,9 +29,6 @@ public class LoginProcedureDAO implements GenericProcedureDAO<Credentials> {
             //Esecuzione della procedura
             cs.execute();
             role=cs.getInt(3);
-            if(cs.wasNull()){
-                role=0;//Login fallito
-            }
         }catch (SQLException e){
             throw new DAOException("Login error: "+e.getMessage());
         }
