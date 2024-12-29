@@ -13,38 +13,45 @@ public class InsertCustomerProcedureDAO implements GenericProcedureDAO<Customer>
 
     @Override
     public Customer execute(Object... params) throws DAOException {
-        // Controllo parametri
-        if (params == null || params.length < 1) {
-            throw new DAOException("Invalid parameters provided to the procedure.");
+        // Validazione parametri
+        if (params == null || params.length == 0 || !(params[0] instanceof Customer customer)) {
+            throw new DAOException("Invalid parameters: A valid Customer object is required.");
         }
 
-        Customer customer = (Customer) params[0]; // Retrieve customer from params
 
-        // Database connection and callable statement setup
-        try (Connection conn = ConnectionFactory.getConnection()) {
-            CallableStatement cs = conn.prepareCall("{call insertCustomer(?,?,?,?,?,?,?,?,?,?)}");
+        // Preparazione della connessione e del CallableStatement
+        try (Connection conn = ConnectionFactory.getConnection();
+             CallableStatement cs = conn.prepareCall("{call insertCustomer(?,?,?,?,?,?,?,?,?,?)}")) {
 
-            // Setting the parameters for the stored procedure
-            cs.setString(1, customer.getName());        // Set customer name
-            cs.setString(2, customer.getSurname());     // Set customer surname
-            cs.setString(3, customer.getCf());          // Set customer CF (Codice Fiscale)
-            cs.setDate(4, String.valueOf(customer.getBirthdate()));  // Set customer birthdate (converted to SQL Date)
+            // Imposta i parametri per la stored procedure
+            cs.setString(1, customer.getName());
+            cs.setString(2, customer.getSurname());
+            cs.setString(3, customer.getFiscalCode());
+            cs.setDate(4, Date.valueOf(customer.getBirthdate())); // Conversione di LocalDate in SQL Date
+            cs.setString(5, convertListToCSV(customer.getEmails())); // Emails come stringa CSV
+            cs.setString(6, convertListToCSV(customer.getPhones())); // Phones come stringa CSV
+            cs.setString(7, customer.getAddress());
+            cs.setString(8, customer.getCity());
+            cs.setString(9, customer.getCap());
+            cs.setDate(10, Date.valueOf(customer.getRegistrationDate())); // Data di registrazione
 
-            // Assuming emails and phones are lists, so you want to save them as comma-separated strings
-            cs.setString(5, String.join(",", customer.getEmails()));  // Emails as comma-separated string
-            cs.setString(6, String.join(",", customer.getPhones()));  // Phones as comma-separated string
+            // Esegue la stored procedure
+            cs.executeUpdate();
 
-            cs.setString(7, customer.getAddress());     // Set customer address
-            cs.setString(8, customer.getCity());        // Set customer city
-            cs.setString(9, customer.getCap());         // Set customer CAP (Postal Code)
+            // Restituisce l'oggetto Customer (eventualmente aggiornato con ID generato dal database)
+            return customer;
 
-            // Assuming the stored procedure doesn't return any output (if it does, use cs.getResultSet() or cs.getInt(1))
-            cs.executeUpdate(); // Execute the stored procedure
-
-            return customer; // Return the customer object (could be enhanced to return the customer with auto-generated ID)
         } catch (SQLException e) {
-            // Handle SQL exceptions
+            // Gestione eccezioni SQL
             throw new DAOException("Error executing stored procedure 'insertCustomer': " + e.getMessage(), e);
         }
+    }
+
+    //Converte una lista di stringhe in una stringa CSV.
+    //list La lista di stringhe da convertire.
+    //Ritorna una stringa con elementi separati da virgola, o una stringa vuota se la lista è null o vuota.
+
+    private String convertListToCSV(List<String> list) {
+        return (list == null || list.isEmpty()) ? "" : String.join(",", list);
     }
 }

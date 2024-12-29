@@ -2,45 +2,43 @@ package it.crm.bd.model.domain;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Customer {
     private String name;
     private String surname;
-    private Date birthdate;
-    private String cf;
-    private List<String> phones = new ArrayList<>();
+    private LocalDate birthdate;
+    private String fiscalCode;
+    private List<String> phones;
     private String address;
     private String city;
     private String cap;
-    private List<String> emails = new ArrayList<>();
-    private Date registrationDate;
-    public Customer() {}
+    private List<String> emails;
+    private LocalDate registrationDate;
 
-    // Construttore con dati essenziali
-    public Customer(String name, String surname, Date birthdate, String cf) {
+    // Construttore di default
+    public Customer() {
+        this.phones = new ArrayList<>();
+        this.emails = new ArrayList<>();
+    }
+
+    // Construttore con parametri
+    public Customer(String name, String surname, LocalDate birthdate, String fiscalCode,
+                    List<String> phones, String address, String city, String cap,
+                    List<String> emails, LocalDate registrationDate) {
         this.name = name;
         this.surname = surname;
         this.birthdate = birthdate;
-        this.cf = cf;
-    }
-
-    // Construttore con dettagli di contatto
-    public Customer(List<String> phones, List<String> emails, Date registrationDate) {
-        this.phones = phones;
-        this.emails = emails;
-        this.registrationDate = registrationDate;
-    }
-
-    // Construttore con indirizzo
-    public Customer(String address, String city, String cap) {
+        this.fiscalCode = fiscalCode;
+        this.phones = phones != null ? phones : new ArrayList<>();
         this.address = address;
         this.city = city;
         this.cap = cap;
+        this.emails = emails != null ? emails : new ArrayList<>();
+        this.registrationDate = registrationDate;
     }
 
-    // Metodi getter e setter
+    // Getter e Setter
     public String getName() {
         return name;
     }
@@ -57,20 +55,20 @@ public class Customer {
         this.surname = surname;
     }
 
-    public Date getBirthdate() {
+    public LocalDate getBirthdate() {
         return birthdate;
     }
 
-    public void setBirthdate(Date birthdate) {
+    public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
     }
 
-    public String getCf() {
-        return cf;
+    public String getFiscalCode() {
+        return fiscalCode;
     }
 
-    public void setCf(String cf) {
-        this.cf = cf;
+    public void setFiscalCode(String fiscalCode) {
+        this.fiscalCode = fiscalCode;
     }
 
     public List<String> getPhones() {
@@ -78,7 +76,7 @@ public class Customer {
     }
 
     public void setPhones(List<String> phones) {
-        this.phones = phones;
+        this.phones = phones != null ? phones : new ArrayList<>();
     }
 
     public String getAddress() {
@@ -102,7 +100,11 @@ public class Customer {
     }
 
     public void setCap(String cap) {
-        this.cap = cap;
+        if (cap.matches("\\d{5}")) {
+            this.cap = cap;
+        } else {
+            throw new IllegalArgumentException("CAP must be a 5-digit number.");
+        }
     }
 
     public List<String> getEmails() {
@@ -110,23 +112,31 @@ public class Customer {
     }
 
     public void setEmails(List<String> emails) {
-        this.emails = emails;
+        this.emails = emails != null ? emails : new ArrayList<>();
     }
 
-    public Date getRegistrationDate() {
+    public LocalDate getRegistrationDate() {
         return registrationDate;
     }
 
-    public void setRegistrationDate(Date registrationDate) {
+    public void setRegistrationDate(LocalDate registrationDate) {
         this.registrationDate = registrationDate;
     }
 
-    // Metodo toString per stampare i dettagli
+    // toString per la stampa dell'oggetto
     @Override
     public String toString() {
-        return "Customer{name='" + name + "', surname='" + surname + "', birthdate=" + birthdate +
-                ", cf='" + cf + "', phones=" + phones + ", address='" + address + "', city='" + city +
-                "', cap='" + cap + "', emails=" + emails + ", registrationDate=" + registrationDate + "}";
+        return "Customer{" +
+                "name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", birthdate=" + birthdate +
+                ", fiscalCode='" + fiscalCode + '\'' +
+                ", phones=" + phones +
+                ", address='" + address + '\'' +
+                ", city='" + city + '\'' +
+                ", cap='" + cap + '\'' +
+                ", emails=" + emails +
+                ", registrationDate=" + registrationDate +
+                '}';
     }
 }
-

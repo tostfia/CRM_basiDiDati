@@ -41,6 +41,7 @@ public class ConnectionFactory {
             String user = properties.getProperty(role.name() + "_USER");
             String pass = properties.getProperty(role.name() + "_PASS");
             connection = DriverManager.getConnection(connection_url, user, pass);
+            System.out.println("Connection changed to role: " + role);
         } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
