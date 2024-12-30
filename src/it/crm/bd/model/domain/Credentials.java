@@ -1,13 +1,13 @@
 package it.crm.bd.model.domain;
 
 public class Credentials {
-    private final String username;
-    private final String password;
-    private final Role role;
+    private  String username;
+    private  String password;
+    private  Role role;
     public Credentials(String username, String password, Role role) {
         this.username = username;
         this.password = password;
-        this.role = role;
+        this.role = (role!=null) ? role : Role.NON_RICONOSCIUTO;
     }
     public String getUsername() {return username;}
     public String getPassword() {return password;}

@@ -11,7 +11,7 @@ public class LoginProcedureDAO implements GenericProcedureDAO<Credentials> {
     public Credentials execute(Object... params) throws DAOException {
         String username = (String) params[0];
         String password = (String) params[1];
-        int role = -1;
+        int role;
 
         // Validazione input
         if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
@@ -25,19 +25,21 @@ public class LoginProcedureDAO implements GenericProcedureDAO<Credentials> {
             // Settaggio dei parametri
             cs.setString(1, username);
             cs.setString(2, password);
-            cs.registerOutParameter(3, Types.NUMERIC);
+            cs.registerOutParameter(3, Types.INTEGER);
 
             // Esecuzione della procedura
             cs.execute();
 
             // Recupero del valore del parametro OUT
             role = cs.getInt(3);
+
         } catch (SQLException e) {
             // Gestione errori
             throw new DAOException("Login error: " + e.getMessage(), e);
         }
+        Role userRole = Role.fromInt(role);
 
         // Restituisco l'oggetto Credentials con il ruolo determinato
-        return new Credentials(username, password, Role.fromInt(role));
+        return new Credentials(username, password, userRole);
     }
 }

@@ -1,5 +1,8 @@
 package it.crm.bd.controller;
 import it.crm.bd.model.domain.Credentials;
+import it.crm.bd.model.domain.Role;
+import it.crm.bd.other.Printer;
+
 
 public class ApplicationController implements Controller {
     Credentials cred;
@@ -7,14 +10,22 @@ public class ApplicationController implements Controller {
     public void start(){
         LoginController loginController=new LoginController();
         loginController.start();
-        cred=loginController.getCred();
-        if(cred.getRole()==null){
-            throw new RuntimeException("Invalid credentials");
+        cred = loginController.getCred();
+
+        Role role = cred.getRole();
+        if (role == null) {
+            role = Role.NON_RICONOSCIUTO; // Imposta un ruolo di fallback se il ruolo è null
         }
-        switch(cred.getRole()){
-            case SEGRETERIA -> new SegreteriaController().start();
-            case OPERATORE -> new OperatoreController().start();
-            default -> throw new RuntimeException("Invalid credentials");
+        switch (role) {
+            case SEGRETERIA:
+                new SegreteriaController().start();
+                break;
+            case OPERATORE:
+                new OperatoreController().start();
+                break;
+            default:
+                Printer.print("Ruolo non riconosciuto");
         }
+
     }
 }

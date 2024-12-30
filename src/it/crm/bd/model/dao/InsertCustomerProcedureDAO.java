@@ -24,16 +24,16 @@ public class InsertCustomerProcedureDAO implements GenericProcedureDAO<Customer>
              CallableStatement cs = conn.prepareCall("{call insertCustomer(?,?,?,?,?,?,?,?,?,?)}")) {
 
             // Imposta i parametri per la stored procedure
-            cs.setString(1, customer.getName());
-            cs.setString(2, customer.getSurname());
-            cs.setString(3, customer.getFiscalCode());
-            cs.setDate(4, Date.valueOf(customer.getBirthdate())); // Conversione di LocalDate in SQL Date
-            cs.setString(5, convertListToCSV(customer.getEmails())); // Emails come stringa CSV
-            cs.setString(6, convertListToCSV(customer.getPhones())); // Phones come stringa CSV
-            cs.setString(7, customer.getAddress());
-            cs.setString(8, customer.getCity());
-            cs.setString(9, customer.getCap());
-            cs.setDate(10, Date.valueOf(customer.getRegistrationDate())); // Data di registrazione
+            cs.setString(1, customer.getFiscalCode());
+            cs.setString(2, customer.getName());
+            cs.setString(3, customer.getSurname());
+            cs.setDate(4, Date.valueOf(customer.getBirthdate()));
+            cs.setDate(5, Date.valueOf(customer.getRegistrationDate())); // Data di registrazione
+            cs.setString(6, convertListToCSV(customer.getEmails())); // Emails come stringa CSV
+            cs.setString(7, convertListToCSV(customer.getPhones())); // Phones come stringa CSV
+            cs.setString(8, customer.getCap());
+            cs.setString(9, customer.getAddress());
+            cs.setString(10, customer.getCity());
 
             // Esegue la stored procedure
             cs.executeUpdate();

@@ -16,9 +16,9 @@ public class CustomerView {
     public static Customer insertCustomer() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        Printer.printBlue("Insert customer data");
+        Printer.printBlue("-----------Insert customer data-----------");
 
-        String name = inputString(reader, "Name");
+        String name = inputString(reader, "\nName");
         String surname = inputString(reader, "Surname");
         String fiscalCode = inputString(reader, "Fiscal code");
         LocalDate birthDate = inputDate(reader, "Birth date (YYYY-MM-DD)");

@@ -1,21 +1,21 @@
 package it.crm.bd.model.domain;
 
 public enum Role {
-    SEGRETERIA(2),
-    OPERATORE(3);
-    private final int id;
+    SEGRETERIA(1),
+    OPERATORE(2),
+    NON_RICONOSCIUTO(3);//valore di fallback
+    private int id;
 
-    private Role(int id) {
+    Role(int id) {
         this.id = id;
     }
 
     public static Role fromInt(int id) {
-        for (Role type : values()) {
-            if (type.getId() == id) {
-                return type;
-            }
-        }
-        return null;
+        return switch (id) {
+            case 1 -> SEGRETERIA;
+            case 2 -> OPERATORE;
+            default -> NON_RICONOSCIUTO;
+        };
     }
 
     public int getId() {
