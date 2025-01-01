@@ -12,13 +12,14 @@ import java.time.LocalDate;
 public class InteractionView {
     public static Interaction insertInteraction() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        Printer.printBlue("---------------Insert Interaction---------------");
+        Printer.printBlue("\n---------------Insert Interaction---------------\n");
         LocalDate date = inputDate(reader, "Date (YYYY-MM-DD)");
         Time time = inputTime(reader);
         String customer = inputString(reader, "Customer");
-        String offer = inputString(reader, "Offer");
+        Integer offer = Integer.valueOf(inputInt(reader, "Offer"));
+        String operator = inputString(reader, "Operator");
         //Return un nuovo oggetto interazione
-        return new Interaction(date, time, customer, offer);
+        return new Interaction(date, time, customer, offer,operator);
     }
     private static String inputString(BufferedReader reader, String prompt) throws IOException {
         Printer.print(prompt + ": ");
@@ -49,5 +50,9 @@ public class InteractionView {
             }
         }
         return time;
+    }
+    private static String inputInt(BufferedReader reader, String prompt) throws IOException {
+        Printer.print(prompt + ": ");
+        return reader.readLine().trim();
     }
 }

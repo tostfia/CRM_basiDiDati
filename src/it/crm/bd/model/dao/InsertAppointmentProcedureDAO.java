@@ -15,7 +15,7 @@ public class InsertAppointmentProcedureDAO implements GenericProcedureDAO<Appoin
             throw new DAOException("Invalid input parameters");
         }
         try(Connection conn=ConnectionFactory.getConnection();
-            CallableStatement cs=conn.prepareCall("{call insertAppointment(?,?,?,?,?,?,?,?)}")) {
+            CallableStatement cs=conn.prepareCall("{call insertAppointment(?,?,?,?)}")) {
             cs.setDate(1, Date.valueOf(appointment.getDate()));
             cs.setTime(2, appointment.getTime());
             cs.setString(3, appointment.getCustomer());

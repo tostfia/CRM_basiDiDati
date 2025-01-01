@@ -12,7 +12,7 @@ import java.time.LocalDate;
 public class AppointmentView {
     public static Appointment scheduleAppointment() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        Printer.printlnBlue("---------------Schedule Appointment---------------");
+        Printer.printlnBlue("\n---------------Schedule Appointment---------------\n");
         String customer = inputString(reader, "Customer");
         String branch = inputString(reader, "Branch");
         LocalDate date = inputDate(reader, "Date (YYYY-MM-DD)");

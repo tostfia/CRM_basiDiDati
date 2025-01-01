@@ -15,9 +15,10 @@ public class WriteNoteProcedureDAO implements GenericProcedureDAO<Note> {
             throw new DAOException("Invalid input parameters");
         }
         try(Connection conn = ConnectionFactory.getConnection();
-            CallableStatement cs = conn.prepareCall("{call writeNote(?,?)}")) {
+            CallableStatement cs = conn.prepareCall("{call writeNote(?,?,?)}")) {
             cs.setBoolean(1, note.getOutcome());
             cs.setString(2, note.getDescription());
+            cs.setString(3, note.getCustomer());
             cs.executeUpdate();
             return note;
         } catch (SQLException e) {

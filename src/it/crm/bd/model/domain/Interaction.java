@@ -8,11 +8,13 @@ public class Interaction {
     public Time time;
     public String Customer;
     public String   Offer;
-    public Interaction(LocalDate date, Time time,  String customer, String offer) {
+    public String Operator;
+    public Interaction(LocalDate date, Time time, String customer, Integer offer, String operator) {
         this.date = date;
         this.time = time;
         Customer = customer;
         Offer = offer;
+        this.Operator=operator;
     }
     public LocalDate getDate() {
         return date;
@@ -38,13 +40,20 @@ public class Interaction {
     public void setOffer(String offer) {
         Offer = offer;
     }
+    public String getOperator() {
+        return Operator;
+    }
+    public void setOperator(String operator) {
+        Operator = operator;
+    }
     @Override
-    public String toString() {
+    public String toString(){
         return "Interaction{" +
                 "date=" + date +
                 ", time=" + time +
                 ", Customer='" + Customer + '\'' +
                 ", Offer='" + Offer + '\'' +
+                ", Operator='" + Operator + '\'' +
                 '}';
     }
 }
