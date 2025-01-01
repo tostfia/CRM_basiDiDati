@@ -23,7 +23,7 @@ public class InsertInteractionProcedureDAO implements GenericProcedureDAO<Intera
             cs.setDate(1, Date.valueOf(interaction.getDate()));
             cs.setTime(2, interaction.getTime());
             cs.setString(3, interaction.getCustomer());
-            cs.setString(4, interaction.getOffer());
+            cs.setInt(4, interaction.getOffer().getId());
             cs.setString(5, interaction.getOperator());
             cs.executeUpdate();
             return interaction;

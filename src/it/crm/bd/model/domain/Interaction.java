@@ -7,13 +7,13 @@ public class Interaction {
     public LocalDate date;
     public Time time;
     public String Customer;
-    public String   Offer;
+    public OffersType  Offer;
     public String Operator;
-    public Interaction(LocalDate date, Time time, String customer, Integer offer, String operator) {
+    public Interaction(LocalDate date, Time time, String customer, OffersType offer, String operator) {
         this.date = date;
         this.time = time;
         Customer = customer;
-        Offer = offer;
+        this.Offer = offer;
         this.Operator=operator;
     }
     public LocalDate getDate() {
@@ -34,10 +34,10 @@ public class Interaction {
     public void setCustomer(String customer) {
         Customer = customer;
     }
-    public String getOffer() {
+    public OffersType getOffer() {
         return Offer;
     }
-    public void setOffer(String offer) {
+    public void setOffer(OffersType offer) {
         Offer = offer;
     }
     public String getOperator() {

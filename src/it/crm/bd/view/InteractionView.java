@@ -1,6 +1,7 @@
 package it.crm.bd.view;
 
 import it.crm.bd.model.domain.Interaction;
+import it.crm.bd.model.domain.OffersType;
 import it.crm.bd.other.Printer;
 
 import java.io.BufferedReader;
@@ -16,10 +17,10 @@ public class InteractionView {
         LocalDate date = inputDate(reader, "Date (YYYY-MM-DD)");
         Time time = inputTime(reader);
         String customer = inputString(reader, "Customer");
-        Integer offer = Integer.valueOf(inputInt(reader, "Offer"));
+        OffersType offer = OffersType.valueOf(inputString(reader, "Offer (PROMOTIONAL,DISCOUNT,GIFT,OTHER)"));
         String operator = inputString(reader, "Operator");
         //Return un nuovo oggetto interazione
-        return new Interaction(date, time, customer, offer,operator);
+        return new Interaction(date, time, customer,offer,operator);
     }
     private static String inputString(BufferedReader reader, String prompt) throws IOException {
         Printer.print(prompt + ": ");
@@ -50,9 +51,5 @@ public class InteractionView {
             }
         }
         return time;
-    }
-    private static String inputInt(BufferedReader reader, String prompt) throws IOException {
-        Printer.print(prompt + ": ");
-        return reader.readLine().trim();
     }
 }
