@@ -11,10 +11,11 @@ public class OperatorView {
         Printer.printlnBlue("*    OPERATOR DASHBOARD    *");
         Printer.printlnBlue("*********************************\n");
         Printer.printlnBlue("*** What should I do for you? ***\n");
-        Printer.printlnBlue("1) Write notes");
-        Printer.printlnBlue("2) Call notes");
-        Printer.printlnBlue("3) Add appointment");
-        Printer.printlnBlue("4) Quit");
+        Printer.printlnBlue("1) Interaction");
+        Printer.printlnBlue("2) Write notes");
+        Printer.printlnBlue("3) Call notes");
+        Printer.printlnBlue("4) Add appointment");
+        Printer.printlnBlue("5) Quit");
 
         Scanner input = new Scanner(System.in);
         int choice = 0;

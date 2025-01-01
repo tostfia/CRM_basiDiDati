@@ -73,7 +73,7 @@ public class CustomerView {
             try {
                 date = LocalDate.parse(input);
             } catch (DateTimeParseException e) {
-                Printer.print("Invalid date format. Please enter the date in YYYY-MM-DD format.");
+                Printer.errorPrint("Invalid date format. Please enter the date in YYYY-MM-DD format.");
             }
         }
         return date;
