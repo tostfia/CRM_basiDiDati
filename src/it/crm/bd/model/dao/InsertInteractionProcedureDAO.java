@@ -17,7 +17,7 @@ public class InsertInteractionProcedureDAO implements GenericProcedureDAO<Intera
         if (params == null || params.length == 0 || !(params[0] instanceof Interaction interaction)) {
             throw new DAOException("Invalid input parameters: An Interaction object is required.");
         }
-        Connection conn = null;
+        Connection conn;
         try {
             // Verifica che la connessione non sia nulla (il cambio di ruolo avviene tramite la connessione per ruolo)
             conn = (Connection) params[1];

@@ -13,7 +13,7 @@ public class InsertAppointmentProcedureDAO implements GenericProcedureDAO<Appoin
         if (params == null || params.length == 0 || !(params[0] instanceof Appointment appointment)) {
             throw new DAOException("Invalid input parameters");
         }
-        Connection conn=null;
+        Connection conn;
         try {
             conn = (Connection) params[1];
             if (conn == null || conn.isClosed()) {

@@ -3,7 +3,6 @@ package it.crm.bd.model.dao;
 import it.crm.bd.exception.DAOException;
 import it.crm.bd.model.domain.Customer;
 
-import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
@@ -18,7 +17,7 @@ public class InsertCustomerProcedureDAO implements GenericProcedureDAO<Customer>
         if (params == null || params.length == 0 || !(params[0] instanceof Customer customer)) {
             throw new DAOException("Invalid parameters: A valid Customer object is required.");
         }
-        Connection conn = null;
+        Connection conn;
         try {
             // Verifica che la connessione non sia nulla (il cambio di ruolo avviene tramite la connessione per ruolo)
             conn = (Connection) params[1];

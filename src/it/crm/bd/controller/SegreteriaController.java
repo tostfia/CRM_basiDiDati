@@ -23,7 +23,7 @@ public class SegreteriaController implements Controller {
         try {
             ConnectionFactory.getConnection(Role.SEGRETERIA);
         } catch (SQLException |IOException  e) {
-            throw new RuntimeException("Error while changing role: " + e.getMessage(), e);
+            throw new RuntimeException("Error while connecting to the database: " + e.getMessage(), e);
 
         }
         while(true){

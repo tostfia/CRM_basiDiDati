@@ -3,7 +3,6 @@ package it.crm.bd.model.dao;
 import it.crm.bd.exception.DAOException;
 import it.crm.bd.model.domain.Note;
 
-import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -16,7 +15,7 @@ public class WriteNoteProcedureDAO implements GenericProcedureDAO<Note> {
         if (params == null || params.length == 0 || !(params[0] instanceof Note note)) {
             throw new DAOException("Invalid input: A valid Note object is required.");
         }
-        Connection conn = null;
+        Connection conn;
         try {
             // Verifica che la connessione non sia nulla (il cambio di ruolo avviene tramite la connessione per ruolo)
             conn = (Connection) params[1];

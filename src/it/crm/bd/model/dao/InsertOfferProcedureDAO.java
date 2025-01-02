@@ -2,8 +2,6 @@ package it.crm.bd.model.dao;
 
 import it.crm.bd.exception.DAOException;
 import it.crm.bd.model.domain.Offer;
-
-import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -16,7 +14,7 @@ public class InsertOfferProcedureDAO implements GenericProcedureDAO<Offer> {
         if (params == null || params.length == 0 || !(params[0] instanceof Offer offer)) {
             throw new DAOException("Invalid input: An Offer object is required.");
         }
-        Connection conn = null;
+        Connection conn;
         try {
             // Verifica che la connessione non sia nulla (il cambio di ruolo avviene tramite la connessione per ruolo)
             conn = (Connection) params[1];
