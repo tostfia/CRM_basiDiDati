@@ -1,22 +1,22 @@
 package it.crm.bd.model.domain;
 
 public class Offer {
-    private String type;
+    private OffersType type;
     private String description;
 
-    public Offer(String type, String description) {
+    public Offer(OffersType type, String description) {
         this.type = type;
         this.description = description;
     }
 
-    public String getType() {
+    public OffersType getType() {
         return type;
     }
 
     public String getDescription() {
         return description;
     }
-    public void setType(String type) {
+    public void setType(OffersType type) {
         this.type = type;
     }
     public void setDescription(String description) {

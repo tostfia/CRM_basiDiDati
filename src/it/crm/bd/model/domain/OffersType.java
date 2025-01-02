@@ -5,7 +5,7 @@ public enum OffersType {
     DISCOUNT(2),
     GIFT(3),
     OTHER(4);
-    private int id;
+    private final int id;
     OffersType(int id) {
         this.id = id;
     }
