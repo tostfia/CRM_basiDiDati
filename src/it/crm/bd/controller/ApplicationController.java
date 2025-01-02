@@ -5,6 +5,7 @@ import it.crm.bd.other.Printer;
 
 
 public class ApplicationController implements Controller {
+
     Credentials cred;
     @Override
     public void start(){
@@ -12,19 +13,13 @@ public class ApplicationController implements Controller {
         loginController.start();
         cred = loginController.getCred();
 
-        Role role = cred.getRole();
-        if (role == null) {
-            role = Role.NON_RICONOSCIUTO; // Imposta un ruolo di fallback se il ruolo è null
-        }
+        Role role = cred != null ? cred.getRole() : Role.NON_RICONOSCIUTO;
+
+        // Gestione dei ruoli
         switch (role) {
-            case SEGRETERIA:
-                new SegreteriaController().start();
-                break;
-            case OPERATORE:
-                new OperatoreController().start();
-                break;
-            default:
-                Printer.print("Ruolo non riconosciuto");
+            case SEGRETERIA -> new SegreteriaController().start();
+            case OPERATORE -> new OperatoreController().start();
+            default -> Printer.print("Ruolo non riconosciuto o non autorizzato.");
         }
 
     }

@@ -4,7 +4,6 @@ import it.crm.bd.exception.DAOException;
 import it.crm.bd.model.domain.Credentials;
 import it.crm.bd.model.domain.Role;
 
-import java.io.IOException;
 import java.sql.*;
 
 public class LoginProcedureDAO implements GenericProcedureDAO<Credentials> {
@@ -22,34 +21,30 @@ public class LoginProcedureDAO implements GenericProcedureDAO<Credentials> {
             throw new DAOException("Invalid input: Username and password cannot be empty.");
         }
 
-        try {
-            // Ottieni l'istanza Singleton di ConnectionFactory
-            ConnectionFactory factory = ConnectionFactory.getInstance();
+        // Ottieni la connessione
+        try (Connection conn = ConnectionFactory.getConnection();
+             CallableStatement cs = conn.prepareCall("{call login(?,?,?)}")) {
 
-            // Ottieni la connessione
-            try (Connection conn = factory.getConnection();
-                 CallableStatement cs = conn.prepareCall("{call login(?,?,?)}")) {
+            // Imposta i parametri della stored procedure
+            cs.setString(1, username);
+            cs.setString(2, password);
+            cs.registerOutParameter(3, Types.INTEGER);
 
-                // Imposta i parametri della stored procedure
-                cs.setString(1, username);
-                cs.setString(2, password);
-                cs.registerOutParameter(3, Types.INTEGER);
+            // Esegui la stored procedure
+            cs.execute();
 
-                // Esegui la stored procedure
-                cs.execute();
+            // Recupera il valore del parametro OUT
+            role = cs.getInt(3);
 
-                // Recupera il valore del parametro OUT
-                role = cs.getInt(3);
-
-                // Se il ruolo è 0 o negativo, segnala un errore di autenticazione
-                if (role <= 0) {
-                    throw new DAOException("Authentication failed: Invalid username or password.");
-                }
-                Role userRole=Role.fromInt(role);
-                factory.changeRole(userRole);
+            // Se il ruolo è 0 o negativo, segnala un errore di autenticazione
+            if (role <= 0) {
+                throw new DAOException("Authentication failed: Invalid username or password.");
             }
-        } catch (SQLException | IOException e) {
-            // Gestione eccezioni
+            Role userRole=Role.fromInt(role);
+            ConnectionFactory.changeRole(userRole);
+
+        } catch (SQLException e) {
+        // Gestione eccezioni
             throw new DAOException("Login error: " + e.getMessage(), e);
         }
 

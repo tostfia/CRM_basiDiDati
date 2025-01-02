@@ -16,26 +16,21 @@ public class InsertOfferProcedureDAO implements GenericProcedureDAO<Offer> {
         if (params == null || params.length == 0 || !(params[0] instanceof Offer offer)) {
             throw new DAOException("Invalid input: An Offer object is required.");
         }
+        // Ottieni la connessione dal Singleton
+        try (Connection conn = ConnectionFactory.getConnection();
+             CallableStatement cs = conn.prepareCall("{call insert_offer(?,?)}")) {
 
-        try {
-            // Ottieni l'istanza Singleton di ConnectionFactory
-            ConnectionFactory factory = ConnectionFactory.getInstance();
+            // Imposta i parametri della stored procedure
+            cs.setInt(1, offer.getType().getId());
+            cs.setString(2, offer.getDescription());
 
-            // Ottieni la connessione dal Singleton
-            try (Connection conn = factory.getConnection();
-                 CallableStatement cs = conn.prepareCall("{call insert_offer(?,?)}")) {
+            // Esegue la stored procedure
+            cs.executeUpdate();
 
-                // Imposta i parametri della stored procedure
-                cs.setInt(1, offer.getType().getId());
-                cs.setString(2, offer.getDescription());
+            // Restituisce l'oggetto Offer
+            return offer;
 
-                // Esegue la stored procedure
-                cs.executeUpdate();
-
-                // Restituisce l'oggetto Offer
-                return offer;
-            }
-        } catch (IOException | SQLException e) {
+        } catch ( SQLException e) {
             // Gestione eccezioni
             throw new DAOException("Error executing stored procedure 'insertOffer': " + e.getMessage(), e);
         }

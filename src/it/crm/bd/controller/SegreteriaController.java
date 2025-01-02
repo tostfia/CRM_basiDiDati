@@ -20,9 +20,8 @@ public class SegreteriaController implements Controller {
     @Override
     public void start() {
         try {
-            ConnectionFactory connectionFactory = ConnectionFactory.getInstance();
-            connectionFactory.changeRole(Role.SEGRETERIA);
-        } catch (SQLException | IOException e) {
+            ConnectionFactory.changeRole(Role.SEGRETERIA);
+        } catch (SQLException  e) {
             throw new RuntimeException("Error while changing role: " + e.getMessage(), e);
 
         }

@@ -17,27 +17,23 @@ public class WriteNoteProcedureDAO implements GenericProcedureDAO<Note> {
             throw new DAOException("Invalid input: A valid Note object is required.");
         }
 
-        try {
-            // Ottieni l'istanza Singleton di ConnectionFactory
-            ConnectionFactory factory = ConnectionFactory.getInstance();
+        // Ottieni la connessione
+        try (Connection conn = ConnectionFactory.getConnection();
+             CallableStatement cs = conn.prepareCall("{call writeNote(?,?,?)}")) {
 
-            // Ottieni la connessione
-            try (Connection conn = factory.getConnection();
-                 CallableStatement cs = conn.prepareCall("{call writeNote(?,?,?)}")) {
+            // Imposta i parametri per la stored procedure
+            cs.setBoolean(1, note.getOutcome());
+            cs.setString(2, note.getDescription());
+            cs.setString(3, note.getCustomer());
 
-                // Imposta i parametri per la stored procedure
-                cs.setBoolean(1, note.getOutcome());
-                cs.setString(2, note.getDescription());
-                cs.setString(3, note.getCustomer());
+            // Esegui la stored procedure
+            cs.executeUpdate();
 
-                // Esegui la stored procedure
-                cs.executeUpdate();
+            // Restituisci l'oggetto Note
+            return note;
 
-                // Restituisci l'oggetto Note
-                return note;
-            }
-        } catch (SQLException | IOException e) {
-            // Gestione delle eccezioni
+        } catch (SQLException e) {
+        // Gestione delle eccezioni
             throw new DAOException("Error executing stored procedure 'writeNote': " + e.getMessage(), e);
         }
     }

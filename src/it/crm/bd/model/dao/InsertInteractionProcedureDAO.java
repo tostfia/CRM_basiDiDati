@@ -18,28 +18,22 @@ public class InsertInteractionProcedureDAO implements GenericProcedureDAO<Intera
         if (params == null || params.length == 0 || !(params[0] instanceof Interaction interaction)) {
             throw new DAOException("Invalid input parameters: An Interaction object is required.");
         }
+        try (Connection conn = ConnectionFactory.getConnection();
+             CallableStatement cs = conn.prepareCall("{call insertInteraction(?,?,?,?,?)}")) {
+            // Imposta i parametri per la stored procedure
+            cs.setDate(1, Date.valueOf(interaction.getDate()));
+            cs.setTime(2, interaction.getTime());
+            cs.setString(3, interaction.getCustomer());
+            cs.setInt(4, interaction.getOffer().getId());
+            cs.setString(5, interaction.getOperator());
 
-        try {
-            // Ottieni l'istanza Singleton di ConnectionFactory
-            ConnectionFactory factory = ConnectionFactory.getInstance();
+            // Esegue la stored procedure
+            cs.executeUpdate();
 
-            // Ottieni la connessione dal Singleton
-            try (Connection conn = factory.getConnection();
-                 CallableStatement cs = conn.prepareCall("{call insertInteraction(?,?,?,?,?)}")) {
-                // Imposta i parametri per la stored procedure
-                cs.setDate(1, Date.valueOf(interaction.getDate()));
-                cs.setTime(2, interaction.getTime());
-                cs.setString(3, interaction.getCustomer());
-                cs.setInt(4, interaction.getOffer().getId());
-                cs.setString(5, interaction.getOperator());
+            // Restituisce l'oggetto Interaction
+            return interaction;
 
-                // Esegue la stored procedure
-                cs.executeUpdate();
-
-                // Restituisce l'oggetto Interaction
-                return interaction;
-            }
-        } catch (IOException | SQLException e) {
+        } catch ( SQLException e) {
             // Gestione eccezioni
             throw new DAOException("Error executing stored procedure 'insertInteraction': " + e.getMessage(), e);
         }

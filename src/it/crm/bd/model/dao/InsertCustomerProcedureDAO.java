@@ -18,13 +18,7 @@ public class InsertCustomerProcedureDAO implements GenericProcedureDAO<Customer>
         if (params == null || params.length == 0 || !(params[0] instanceof Customer customer)) {
             throw new DAOException("Invalid parameters: A valid Customer object is required.");
         }
-
-        try {
-            // Ottieni l'istanza Singleton di ConnectionFactory
-            ConnectionFactory factory = ConnectionFactory.getInstance();
-
-            // Ottieni la connessione dal Singleton
-            try (Connection conn = factory.getConnection();
+            try (Connection conn = ConnectionFactory.getConnection();
                  CallableStatement cs = conn.prepareCall("{call insertCustomer(?,?,?,?,?,?,?,?,?,?)}")) {
 
                 // Imposta i parametri per la stored procedure
@@ -44,11 +38,10 @@ public class InsertCustomerProcedureDAO implements GenericProcedureDAO<Customer>
 
                 // Restituisce l'oggetto Customer
                 return customer;
+            } catch ( SQLException e) {
+                // Gestione eccezioni
+                throw new DAOException("Error executing stored procedure 'insertCustomer': " + e.getMessage(), e);
             }
-        } catch (IOException | SQLException e) {
-            // Gestione eccezioni
-            throw new DAOException("Error executing stored procedure 'insertCustomer': " + e.getMessage(), e);
-        }
     }
 
     /**
