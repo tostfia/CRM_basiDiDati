@@ -4,6 +4,7 @@ import it.crm.bd.exception.DAOException;
 import it.crm.bd.model.domain.Credentials;
 import it.crm.bd.model.domain.Role;
 
+import java.io.IOException;
 import java.sql.*;
 
 public class LoginProcedureDAO implements GenericProcedureDAO<Credentials> {
@@ -22,7 +23,7 @@ public class LoginProcedureDAO implements GenericProcedureDAO<Credentials> {
         }
 
         // Ottieni la connessione
-        try (Connection conn = ConnectionFactory.getConnection();
+        try (Connection conn = ConnectionFactory.getLoginConnection();
              CallableStatement cs = conn.prepareCall("{call login(?,?,?)}")) {
 
             // Imposta i parametri della stored procedure
@@ -41,17 +42,11 @@ public class LoginProcedureDAO implements GenericProcedureDAO<Credentials> {
                 throw new DAOException("Authentication failed: Invalid username or password.");
             }
             Role userRole=Role.fromInt(role);
-            ConnectionFactory.changeRole(userRole);
+            return new Credentials(username, password, userRole);
 
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
         // Gestione eccezioni
             throw new DAOException("Login error: " + e.getMessage(), e);
         }
-
-        // Converti il ruolo numerico in un oggetto Role
-
-
-        // Restituisci l'oggetto Credentials con i dati ottenuti
-        return new Credentials(username, password, Role.fromInt(role));
     }
 }

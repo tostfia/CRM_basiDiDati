@@ -13,6 +13,7 @@ import it.crm.bd.view.OfferView;
 import it.crm.bd.view.SegreteriaView;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 
 public class SegreteriaController implements Controller {
@@ -20,8 +21,8 @@ public class SegreteriaController implements Controller {
     @Override
     public void start() {
         try {
-            ConnectionFactory.changeRole(Role.SEGRETERIA);
-        } catch (SQLException  e) {
+            ConnectionFactory.getConnection(Role.SEGRETERIA);
+        } catch (SQLException |IOException  e) {
             throw new RuntimeException("Error while changing role: " + e.getMessage(), e);
 
         }
@@ -51,12 +52,12 @@ public class SegreteriaController implements Controller {
             throw new RuntimeException("Error while creating customer from input: " + e.getMessage(), e);
         }
 
-        try {
+        try (Connection conn = ConnectionFactory.getConnection(Role.SEGRETERIA)) {
             // Step 2: Inserimento del cliente nel database tramite DAO
             InsertCustomerProcedureDAO customerDAO = new InsertCustomerProcedureDAO();
-            customerDAO.execute(customer);
+            customerDAO.execute(customer, conn);
             Printer.printBlue("Customer successfully inserted into the database.");
-        } catch (DAOException e) {
+        } catch (DAOException | SQLException | IOException e) {
             // Gestione errore DAO
             throw new RuntimeException("Error while inserting customer into the database: " + e.getMessage(), e);
         }
@@ -69,11 +70,11 @@ public class SegreteriaController implements Controller {
         }catch(IOException e){
             throw new RuntimeException("Error while creating offer from input: "+e.getMessage(),e);
         }
-        try {
+        try(Connection conn= ConnectionFactory.getConnection(Role.SEGRETERIA)){
             InsertOfferProcedureDAO offerDAO = new InsertOfferProcedureDAO();
-            offerDAO.execute(offer);
+            offerDAO.execute(offer, conn);
             Printer.printBlue("Offer successfully inserted into the database.");
-        } catch (DAOException e) {
+        } catch (DAOException | SQLException | IOException e) {
             throw new RuntimeException("Error while inserting offer into the database: " + e.getMessage(), e);
         }
     }

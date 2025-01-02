@@ -16,6 +16,7 @@ import it.crm.bd.view.NoteView;
 import it.crm.bd.view.OperatorView;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 
 public class OperatoreController implements Controller {
@@ -23,8 +24,8 @@ public class OperatoreController implements Controller {
     @Override
     public void start() {
         try{
-            ConnectionFactory.changeRole(Role.OPERATORE);
-        }catch(SQLException e){
+            ConnectionFactory.getConnection(Role.OPERATORE);
+        }catch(SQLException | IOException e){
             throw new RuntimeException("Error while changing role: "+e.getMessage(),e);
         }
         while(true){
@@ -53,12 +54,12 @@ public class OperatoreController implements Controller {
             // Gestione errore input/output
             throw new RuntimeException("Error while creating interaction from input: " + e.getMessage(), e);
         }
-        try{
+        try(Connection conn= ConnectionFactory.getConnection(Role.OPERATORE)){
             // Step 2: Inserimento dell'interazione nel database tramite DAO
             InsertInteractionProcedureDAO interactionDAO= new InsertInteractionProcedureDAO();
-            interactionDAO.execute(interaction);
+            interactionDAO.execute(interaction,conn);
             Printer.printBlue("Interaction successfully inserted into the database.");
-        }catch (DAOException e){
+        }catch (IOException | SQLException |DAOException e){
             // Gestione errore DAO
             throw new RuntimeException("Error while inserting interaction into the database: " + e.getMessage(), e);
         }
@@ -72,12 +73,12 @@ public class OperatoreController implements Controller {
             // Gestione errore input/output
             throw new RuntimeException("Error while creating note from input: " + e.getMessage(), e);
         }
-        try {
+        try (Connection conn = ConnectionFactory.getConnection(Role.OPERATORE)) {
             // Step 2: Inserimento della nota nel database tramite DAO
             WriteNoteProcedureDAO noteDAO = new WriteNoteProcedureDAO();
-            noteDAO.execute(note);
+            noteDAO.execute(note, conn);
             Printer.printBlue("Note successfully inserted into the database.");
-        } catch (DAOException e) {
+        } catch (DAOException | IOException | SQLException e) {
             // Gestione errore DAO
             throw new RuntimeException("Error while inserting note into the database: " + e.getMessage(), e);
         }
@@ -92,11 +93,11 @@ public class OperatoreController implements Controller {
         }catch(IOException e){
             throw new RuntimeException("Error while creating appointment from input: "+e.getMessage(),e);
         }
-        try{
+        try(Connection conn= ConnectionFactory.getConnection(Role.OPERATORE)){
             InsertAppointmentProcedureDAO appointmentDAO= new InsertAppointmentProcedureDAO();
-            appointmentDAO.execute(appointment);
+            appointmentDAO.execute(appointment,conn);
             Printer.printBlue("Appointment successfully inserted into the database.");
-        }catch(DAOException e){
+        }catch(DAOException | SQLException | IOException e){
             throw new RuntimeException("Error while inserting appointment into the database: "+e.getMessage(),e);
         }
     }
