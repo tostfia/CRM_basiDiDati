@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class OperatorView {
     public static int showMenu() throws IOException {
-        Printer.printlnBlue("*********************************");
+        Printer.printlnBlue("\n*********************************");
         Printer.printlnBlue("*    OPERATOR DASHBOARD    *");
         Printer.printlnBlue("*********************************\n");
         Printer.printlnBlue("*** What should I do for you? ***\n");
@@ -18,11 +18,11 @@ public class OperatorView {
         Printer.printlnBlue("5) Quit");
 
         Scanner input = new Scanner(System.in);
-        int choice = 0;
+        int choice ;
         while (true) {
             Printer.print("Please enter your choice: ");
             choice = input.nextInt();
-            if (choice >= 1 && choice <= 4) {
+            if (choice >= 1 && choice <= 5) {
                 break;
             }
             Printer.errorPrint("Invalid option");

@@ -1,14 +1,8 @@
 package it.crm.bd.controller;
 
 import it.crm.bd.exception.DAOException;
-import it.crm.bd.model.dao.ConnectionFactory;
-import it.crm.bd.model.dao.InsertAppointmentProcedureDAO;
-import it.crm.bd.model.dao.InsertInteractionProcedureDAO;
-import it.crm.bd.model.dao.WriteNoteProcedureDAO;
-import it.crm.bd.model.domain.Appointment;
-import it.crm.bd.model.domain.Interaction;
-import it.crm.bd.model.domain.Note;
-import it.crm.bd.model.domain.Role;
+import it.crm.bd.model.dao.*;
+import it.crm.bd.model.domain.*;
 import it.crm.bd.other.Printer;
 import it.crm.bd.view.AppointmentView;
 import it.crm.bd.view.InteractionView;
@@ -18,6 +12,7 @@ import it.crm.bd.view.OperatorView;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 public class OperatoreController implements Controller {
 
@@ -84,7 +79,25 @@ public class OperatoreController implements Controller {
         }
     }
     public void callNotes() {
-        throw new RuntimeException("Not implemented yet");
+        String customerCF;
+        try{
+             customerCF=NoteView.callNotes();
+        }catch(IOException e){
+            throw new RuntimeException("Error while creating customer from input: "+e.getMessage(),e);
+        }
+        try(Connection conn= ConnectionFactory.getConnection(Role.OPERATORE)){
+            ReportNoteProcedureDAO noteDAO= new ReportNoteProcedureDAO();
+            List<Note> notes=noteDAO.execute(customerCF,conn);
+            if(notes.isEmpty()) {
+                Printer.errorPrint("No notes found for the customer.");
+            } else {
+                for (Note note : notes) {
+                    Printer.printBlue(note.toString());
+                }
+            }
+        }catch(DAOException | SQLException | IOException e){
+            throw new RuntimeException("Error while reporting customer's notes: "+e.getMessage(),e);
+        }
     }
     public void addAppointment() {
         Appointment appointment;

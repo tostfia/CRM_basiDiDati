@@ -5,6 +5,7 @@ import it.crm.bd.other.Printer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class NoteView {
     public static Note writeNotes() throws IOException{
@@ -33,5 +34,10 @@ public class NoteView {
             }
         }
         return outcome;
+    }
+    public static String callNotes() throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        Printer.printlnBlue("\n---------------Customer's notes report---------------\n");
+        return inputString(reader, "Customer");
     }
 }
