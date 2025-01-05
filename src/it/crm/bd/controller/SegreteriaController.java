@@ -7,6 +7,7 @@ import it.crm.bd.model.dao.InsertOfferProcedureDAO;
 import it.crm.bd.model.dao.ReportCustomerProcedureDAO;
 import it.crm.bd.model.domain.Customer;
 import it.crm.bd.model.domain.Offer;
+import it.crm.bd.model.domain.ReportCustomer;
 import it.crm.bd.model.domain.Role;
 import it.crm.bd.other.Printer;
 import it.crm.bd.view.CustomerView;
@@ -16,6 +17,8 @@ import it.crm.bd.view.SegreteriaView;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.List;
 
 public class SegreteriaController implements Controller {
 
@@ -80,19 +83,31 @@ public class SegreteriaController implements Controller {
         }
     }
     public void reportCustomer() {
-        int range;
-        try{
-            range= CustomerView.reportCustomer();
-        }catch(IOException e){
-            throw new RuntimeException("Error while creating report from input: "+e.getMessage(),e);
-        }
-        try(Connection conn= ConnectionFactory.getConnection(Role.SEGRETERIA)){
-            ReportCustomerProcedureDAO reportDAO = new ReportCustomerProcedureDAO();
-            reportDAO.execute(range, conn);
-            Printer.printBlue("Report successfully generated.");
-        }catch (DAOException | SQLException | IOException e) {
-            throw new RuntimeException("Error while generating report: " + e.getMessage(), e);
-        }
+        try {
+            // Ottieni il range di date dall'utente
+            LocalDate[] range = CustomerView.reportCustomer();
+            LocalDate start = range[0];
+            LocalDate end = range[1];
 
+            // Connessione al database e generazione del report
+            try (Connection conn = ConnectionFactory.getConnection(Role.SEGRETERIA)) {
+                ReportCustomerProcedureDAO reportDAO = new ReportCustomerProcedureDAO();
+                List<ReportCustomer> report =reportDAO.execute(start, end, conn);
+                if(report.isEmpty()){
+                    Printer.errorPrint("No customers found in the specified range.");
+                }else{
+                    for(ReportCustomer rc: report){
+                        Printer.print(rc.toString());
+                    }
+                }
+            } catch (DAOException | SQLException e) {
+                Printer.errorPrint("Database error while generating report: " + e.getMessage());
+                throw new RuntimeException("Error while generating report: " + e.getMessage(), e);
+            }
+        } catch (IOException e) {
+            Printer.errorPrint("Input error: " + e.getMessage());
+            throw new RuntimeException("Error while creating report from input: " + e.getMessage(), e);
+        }
     }
+
 }

@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class SegreteriaView {
     public static int showMenu() throws IOException {
-        Printer.printBlue("*********************************");
+        Printer.printBlue("\n*********************************");
         Printer.printBlue("\n*    SECRETARY DASHBOARD    *");
         Printer.printBlue("\n*********************************\n");
         Printer.printBlue("\n*** What should I do for you? ***\n");

@@ -7,8 +7,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CustomerView {
@@ -114,11 +116,32 @@ public class CustomerView {
         }
         return emails;
     }
-    public static int reportCustomer() throws IOException {
+    public static LocalDate[] reportCustomer() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        Printer.printBlue("-----------Report customer-----------");
-        Printer.print("Enter the range of the report : ");
-        return Integer.parseInt(reader.readLine().trim());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        Printer.printBlue("\n-----------Report customer-----------");
+        LocalDate start=null;
+        LocalDate end=null;
+        while (start == null) {
+            Printer.print("\nStart date (YYYY-MM-DD): ");
+            String input = reader.readLine().trim();
+            try {
+                start = LocalDate.parse(input, formatter);
+            } catch (DateTimeParseException e) {
+                Printer.errorPrint("Invalid date format. Please enter the date in YYYY-MM-DD format.");
+            }
+        }
+        while (end == null) {
+            Printer.print("End date (YYYY-MM-DD): ");
+            String input = reader.readLine().trim();
+            try {
+                end = LocalDate.parse(input, formatter);
+            } catch (DateTimeParseException e) {
+                Printer.errorPrint("Invalid date format. Please enter the date in YYYY-MM-DD format.");
+            }
+        }
+        Printer.printGreen("\nReport will be generated for the range:" +start+" - "+end);
+        return new LocalDate[]{start,end};
     }
 }
 
