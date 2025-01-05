@@ -55,11 +55,11 @@ public class Note {
     @Override
     public String toString() {
         return "--------------------"+ customerName+ customerSurname+ "'s notes--------------------" +
-                "\nOutcome: " + (Boolean.TRUE.equals(outcome) ? "accepted" : "refused") +
-                "\nDescription: " + description +
-                "\nDate: " + date +
-                "\nTime: " + time +
-                "\nOperator: " + operator +
-                "\nAppointment: " + (appointmentBranch == null ? "none" : appointmentBranch + " on " + appointmentDate + " at " + appointmentTime);
+                "\n |Outcome: " + (Boolean.TRUE.equals(outcome) ? "accepted" : "refused") + "|" +
+                "\n |Description: " + description + "|" +
+                "\n |Date: " + date + "|" +
+                "\n |Time: " + time + "|" +
+                "\n |Operator: " + operator + "|" +
+                "\n |Appointment: " + (appointmentBranch == null ? "none" : appointmentBranch + " on " + appointmentDate + " at " + appointmentTime) + "|";
     }
 }

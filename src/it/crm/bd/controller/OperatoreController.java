@@ -35,7 +35,8 @@ public class OperatoreController implements Controller {
                 case 2-> writeNotes();
                 case 3-> callNotes();
                 case 4-> addAppointment();
-                case 5-> System.exit(0);
+                case 5-> showCustomers();
+                case 6-> System.exit(0);
                 default -> throw new RuntimeException("Invalid choice");
             }
         }
@@ -92,7 +93,7 @@ public class OperatoreController implements Controller {
                 Printer.errorPrint("No notes found for the customer.");
             } else {
                 for (Note note : notes) {
-                    Printer.printBlue(note.toString());
+                    Printer.printGreen(note.toString());
                 }
             }
         }catch(DAOException | SQLException | IOException e){
@@ -112,6 +113,21 @@ public class OperatoreController implements Controller {
             Printer.printBlue("Appointment successfully inserted into the database.");
         }catch(DAOException | SQLException | IOException e){
             throw new RuntimeException("Error while inserting appointment into the database: "+e.getMessage(),e);
+        }
+    }
+    public void showCustomers(){
+        try(Connection conn= ConnectionFactory.getConnection(Role.OPERATORE)) {
+            CustomerProcedureDAO customerDAO = new CustomerProcedureDAO();
+            List<Customer> customers = customerDAO.execute(conn);
+            if (customers.isEmpty()) {
+                Printer.errorPrint("No customers found in the database.");
+            } else {
+                for (Customer customer : customers) {
+                    Printer.printGreen(customer.toString());
+                }
+            }
+        }catch(DAOException | SQLException | IOException e){
+            throw new RuntimeException("Error while reporting customers: "+e.getMessage(),e);
         }
     }
 }

@@ -4,6 +4,7 @@ import it.crm.bd.exception.DAOException;
 import it.crm.bd.model.dao.ConnectionFactory;
 import it.crm.bd.model.dao.InsertCustomerProcedureDAO;
 import it.crm.bd.model.dao.InsertOfferProcedureDAO;
+import it.crm.bd.model.dao.ReportCustomerProcedureDAO;
 import it.crm.bd.model.domain.Customer;
 import it.crm.bd.model.domain.Offer;
 import it.crm.bd.model.domain.Role;
@@ -79,6 +80,19 @@ public class SegreteriaController implements Controller {
         }
     }
     public void reportCustomer() {
+        int range;
+        try{
+            range= CustomerView.reportCustomer();
+        }catch(IOException e){
+            throw new RuntimeException("Error while creating report from input: "+e.getMessage(),e);
+        }
+        try(Connection conn= ConnectionFactory.getConnection(Role.SEGRETERIA)){
+            ReportCustomerProcedureDAO reportDAO = new ReportCustomerProcedureDAO();
+            reportDAO.execute(range, conn);
+            Printer.printBlue("Report successfully generated.");
+        }catch (DAOException | SQLException | IOException e) {
+            throw new RuntimeException("Error while generating report: " + e.getMessage(), e);
+        }
 
     }
 }

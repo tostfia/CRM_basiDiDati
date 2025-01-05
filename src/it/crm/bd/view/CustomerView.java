@@ -114,6 +114,12 @@ public class CustomerView {
         }
         return emails;
     }
+    public static int reportCustomer() throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        Printer.printBlue("-----------Report customer-----------");
+        Printer.print("Enter the range of the report : ");
+        return Integer.parseInt(reader.readLine().trim());
+    }
 }
 
 
