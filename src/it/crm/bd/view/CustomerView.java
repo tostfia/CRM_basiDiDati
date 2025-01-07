@@ -143,6 +143,33 @@ public class CustomerView {
         Printer.printGreen("\nReport will be generated for the range:" +start+" - "+end);
         return new LocalDate[]{start,end};
     }
+
+    public static Customer updateContacts() throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        Printer.printBlue("\n-----------Update customer contacts-----------");
+        Printer.print("\nFiscal code: ");
+        String fiscalCode = reader.readLine().trim();
+        Printer.print("\n Email or phone number: (email/phone) ");
+        String type = reader.readLine().trim();
+        Printer.print("\n New contact: ");
+        String contact = reader.readLine().trim();
+        return new Customer(fiscalCode, type, contact);
+
+    }
+    public static Customer updateAddress() throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        Printer.printBlue("\n-----------Update customer address-----------");
+        Printer.print("\nFiscal code: ");
+        String fiscalCode = reader.readLine().trim();
+        Printer.print("\nNew address: ");
+        String address = reader.readLine().trim();
+        Printer.print("\nNew city: ");
+        String city = reader.readLine().trim();
+        Printer.print("\nNew CAP: ");
+        String cap = reader.readLine().trim();
+        return new Customer(fiscalCode, address, city, cap);
+    }
+
 }
 
 

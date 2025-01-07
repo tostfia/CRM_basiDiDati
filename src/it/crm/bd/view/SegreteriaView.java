@@ -14,14 +14,16 @@ public class SegreteriaView {
         Printer.printBlue("\n1) Add customer");
         Printer.printBlue("\n2) Add offer");
         Printer.printBlue("\n3) Report customer");
-        Printer.printBlue("\n4) Quit");
+        Printer.printBlue("\n4) Update  customer's address");
+        Printer.printBlue("\n5) Update  customer's phone number or email");
+        Printer.printBlue("\n6) Quit");
 
         Scanner input= new Scanner(System.in);
         int choice=0;
         while(true){
             Printer.print("\nPlease enter your choice: ");
             choice= input.nextInt();
-            if(choice>=1 && choice<=4){
+            if(choice>=1 && choice<=6){
                 break;
             }
             Printer.errorPrint("Invalid option");

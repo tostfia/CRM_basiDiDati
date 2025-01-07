@@ -1,10 +1,7 @@
 package it.crm.bd.controller;
 
 import it.crm.bd.exception.DAOException;
-import it.crm.bd.model.dao.ConnectionFactory;
-import it.crm.bd.model.dao.InsertCustomerProcedureDAO;
-import it.crm.bd.model.dao.InsertOfferProcedureDAO;
-import it.crm.bd.model.dao.ReportCustomerProcedureDAO;
+import it.crm.bd.model.dao.*;
 import it.crm.bd.model.domain.Customer;
 import it.crm.bd.model.domain.Offer;
 import it.crm.bd.model.domain.ReportCustomer;
@@ -41,11 +38,47 @@ public class SegreteriaController implements Controller {
                 case 1-> insertCustomer();
                 case 2-> insertOffer();
                 case 3-> reportCustomer();
-                case 4-> System.exit(0);
+                case 4-> updateAddress();
+                case 5-> updateContacts();
+                case 6-> System.exit(0);
                 default -> throw new RuntimeException("Invalid choice");
             }
         }
     }
+
+    private void updateContacts() {
+        Customer customer;
+        try {
+            customer = CustomerView.updateContacts();
+        } catch (IOException e) {
+            throw new RuntimeException("Error while updating contacts from input: " + e.getMessage(), e);
+        }
+        try (Connection conn = ConnectionFactory.getConnection(Role.SEGRETERIA)) {
+            UpdateContactsProcedureDAO contactsDAO = new UpdateContactsProcedureDAO();
+            contactsDAO.execute(customer, conn);
+            Printer.printBlue("Contacts successfully updated into the database.");
+        } catch (DAOException | SQLException | IOException e) {
+            throw new RuntimeException("Error while updating contacts into the database: " + e.getMessage(), e);
+        }
+    }
+
+
+    private void updateAddress() {
+        Customer customer;
+        try{
+            customer= CustomerView.updateAddress();
+        }catch (IOException e){
+            throw new RuntimeException("Error while updating address from input: "+e.getMessage(),e);
+        }
+        try(Connection conn= ConnectionFactory.getConnection(Role.SEGRETERIA)){
+            UpdateAddressProcedureDAO addressDAO = new UpdateAddressProcedureDAO();
+            addressDAO.execute(customer, conn);
+            Printer.printBlue("Address successfully updated into the database.");
+        } catch (DAOException | SQLException | IOException e) {
+            throw new RuntimeException("Error while updating address into the database: " + e.getMessage(), e);
+        }
+    }
+
     public void insertCustomer() {
         Customer customer;
         try {

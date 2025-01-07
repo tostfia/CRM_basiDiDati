@@ -36,6 +36,25 @@ public class Customer {
         this.emails = emails != null ? emails : new ArrayList<>();
         this.registrationDate = registrationDate;
     }
+    //Construttore email e telefono
+    public Customer(String fiscalCode,String type,String value){
+        this.fiscalCode = fiscalCode;
+        if(type.equals("phone")){
+            this.phones = new ArrayList<>();
+            this.phones.add(value);
+        }else if(type.equals("email")){
+            this.emails = new ArrayList<>();
+            this.emails.add(value);
+        }
+    }
+    // Metodo per indirizzi
+    public Customer(String fiscalCode, String address, String city, String cap) {
+        this.fiscalCode = fiscalCode;
+        this.address = address;
+        this.city = city;
+        this.cap = cap;
+    }
+
 
     // Getter e Setter
     public String getName() {
@@ -44,6 +63,35 @@ public class Customer {
     public void setName(String name) {
         this.name = name;
     }
+    public String getType() {
+        boolean hasPhone = phones != null && !phones.isEmpty();
+        boolean hasEmail = emails != null && !emails.isEmpty();
+
+        if (hasPhone && hasEmail) {
+            return "phone, email";  // Se entrambi i contatti sono presenti
+        } else if (hasPhone) {
+            return "phone";  // Se solo il telefono è presente
+        } else if (hasEmail) {
+            return "email";  // Se solo l'email è presente
+        }
+        return null;  // Nessun contatto presente
+    }
+
+    public List<String> getValues() {
+        List<String> values = new ArrayList<>();
+
+        // Aggiungi i numeri di telefono se presenti
+        if (phones != null && !phones.isEmpty()) {
+            values.addAll(phones); // Aggiunge tutti i numeri di telefono alla lista
+        }
+
+        // Aggiungi le email se presenti
+        if (emails != null && !emails.isEmpty()) {
+            values.addAll(emails); // Aggiunge tutte le email alla lista
+        }
+        return values; // Restituisce la lista di contatti
+    }
+
     public String getSurname() {
         return surname;
     }
@@ -110,4 +158,6 @@ public class Customer {
                 "\n |City: " + city + "|" +
                 "\n |CAP: " + cap + "|";
     }
+
+
 }
