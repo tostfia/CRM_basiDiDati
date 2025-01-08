@@ -1,5 +1,6 @@
 package it.crm.bd.view;
 
+import it.crm.bd.model.domain.Contact;
 import it.crm.bd.model.domain.Customer;
 import it.crm.bd.other.Printer;
 
@@ -7,87 +8,54 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class CustomerView {
+    private static final String FISCAL_CODE="Fiscal code";
+    private static final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
     public static Customer insertCustomer() throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
         Printer.printBlue("-----------Insert customer data-----------");
 
-        String name = inputString(reader, "\nName");
-        String surname = inputString(reader, "Surname");
-        String fiscalCode = inputString(reader, "Fiscal code");
-        LocalDate birthDate = inputDate(reader, "Birth date (YYYY-MM-DD)");
-        List<String> phones = inputMultipleStrings(reader, "phone numbers");
-        List<String> emails = inputEmails(reader, "email addresses");
-        String address = inputString(reader, "Address");
-        String city = inputString(reader, "City");
-        String cap = inputValidatedString(reader, "CAP", "\\d{5}", "CAP must be a 5-digit number.");
-        LocalDate registrationDate = inputDate(reader, "Registration date (YYYY-MM-DD)");
+        String name = inputString("Name");
+        String surname = inputString("Surname");
+        String fiscalCode = inputString(FISCAL_CODE);
+        LocalDate birthDate = inputDate("Birth date (YYYY-MM-DD)");
+        List<String> phones = inputMultipleStrings();
+        List<String> emails = inputEmails();
+        String address = inputString("Address");
+        String city = inputString("City");
+        String cap = inputString("CAP");
+        LocalDate registrationDate = inputDate("Registration date (YYYY-MM-DD)");
 
-        // Return un nuovo oggetto Customer
-        return new Customer(
-                name,
-                surname,
-                birthDate,
-                fiscalCode,
-                phones,
-                address,
-                city,
-                cap,
-                emails,
-                registrationDate
-        );
+        return new Customer(name, surname, birthDate, fiscalCode, phones, address, city, cap, emails, registrationDate);
     }
 
-    // Metodo generico per inserire una stringa
-    private static String inputString(BufferedReader reader, String prompt) throws IOException {
-        Printer.print(prompt + ": ");
+    private static String inputString(String prompt) throws IOException {
+        Printer.print(prompt + ":");
         return reader.readLine().trim();
     }
 
-    //Metodo per validare e inserire una stringa con un pattern specifico.
-    private static String inputValidatedString(BufferedReader reader, String prompt, String pattern, String errorMessage) throws IOException {
-        String input;
+
+    private static LocalDate inputDate(String prompt) throws IOException {
         while (true) {
-            Printer.print(prompt + ": ");
-            input = reader.readLine().trim();
-            if (input.matches(pattern)) {
-                return input;
-            }
-            Printer.print(errorMessage);
-        }
-    }
-
-    //Metodo per inserire una data valida.
-
-    private static LocalDate inputDate(BufferedReader reader, String prompt) throws IOException {
-        LocalDate date = null;
-        while (date == null) {
-            Printer.print(prompt + ": ");
-            String input = reader.readLine().trim();
+            String input = inputString(prompt);
             try {
-                date = LocalDate.parse(input);
+                return LocalDate.parse(input);
             } catch (DateTimeParseException e) {
                 Printer.errorPrint("Invalid date format. Please enter the date in YYYY-MM-DD format.");
             }
         }
-        return date;
     }
 
-    //Metodo per inserire più stringhe fino a quando non viene digitato 'done'.
-    private static List<String> inputMultipleStrings(BufferedReader reader, String itemName) throws IOException {
+    private static List<String> inputMultipleStrings() throws IOException {
         List<String> items = new ArrayList<>();
-        Printer.print("Enter " + itemName + " (type 'done' when finished):");
+        Printer.print("Enter " + "phone numbers" + " (type 'done' when finished):");
         while (true) {
             String input = reader.readLine().trim();
-            if (input.equalsIgnoreCase("done")) {
+            if ("done".equalsIgnoreCase(input)) {
                 break;
             }
             if (!input.isEmpty()) {
@@ -97,79 +65,103 @@ public class CustomerView {
         return items;
     }
 
-    //Metodo per validare e inserire email.
-    private static List<String> inputEmails(BufferedReader reader, String prompt) throws IOException {
+    private static List<String> inputEmails() throws IOException {
         List<String> emails = new ArrayList<>();
-        Printer.print("Enter " + prompt + " (type 'done' when finished):");
+        Printer.print("Enter " + "email addresses" + " (type 'done' when finished):");
         while (true) {
             String email = reader.readLine().trim();
-            if (email.equalsIgnoreCase("done")) {
+            if ("done".equalsIgnoreCase(email)) {
                 break;
             }
-            if (!email.isEmpty()) {
-                if (email.matches("^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$")) {
-                    emails.add(email);
-                } else {
-                    Printer.print("Invalid email format: " + email);
-                }
+            if (email.isEmpty()) {
+                Printer.print("Invalid email format: " + email);
+            } else {
+                emails.add(email);
             }
         }
         return emails;
     }
-    public static LocalDate[] reportCustomer() throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        Printer.printBlue("\n-----------Report customer-----------");
-        LocalDate start=null;
-        LocalDate end=null;
-        while (start == null) {
-            Printer.print("\nStart date (YYYY-MM-DD): ");
-            String input = reader.readLine().trim();
-            try {
-                start = LocalDate.parse(input, formatter);
-            } catch (DateTimeParseException e) {
-                Printer.errorPrint("Invalid date format. Please enter the date in YYYY-MM-DD format.");
-            }
+
+    public static String researchCustomerContact() throws IOException {
+        Printer.printBlue("-----------Update customer contacts-----------\n");
+        String fiscalCode = inputString(FISCAL_CODE);
+        if (fiscalCode.isEmpty()) {
+            throw new IOException("Fiscal code cannot be empty.");
         }
-        while (end == null) {
-            Printer.print("End date (YYYY-MM-DD): ");
-            String input = reader.readLine().trim();
-            try {
-                end = LocalDate.parse(input, formatter);
-            } catch (DateTimeParseException e) {
-                Printer.errorPrint("Invalid date format. Please enter the date in YYYY-MM-DD format.");
-            }
-        }
-        Printer.printGreen("\nReport will be generated for the range:" +start+" - "+end);
-        return new LocalDate[]{start,end};
+        return fiscalCode;
     }
 
-    public static Customer updateContacts() throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        Printer.printBlue("\n-----------Update customer contacts-----------");
-        Printer.print("\nFiscal code: ");
-        String fiscalCode = reader.readLine().trim();
-        Printer.print("\n Email or phone number: (email/phone) ");
-        String type = reader.readLine().trim();
-        Printer.print("\n New contact: ");
-        String contact = reader.readLine().trim();
-        return new Customer(fiscalCode, type, contact);
+    public static Contact updateContacts(List<Contact> contacts) throws IOException {
+        if (contacts.isEmpty()) {
+            Printer.errorPrint("No contacts found to update.");
+            return null;
+        }
 
+        Printer.print("Existing contacts:");
+        int index = 1;
+        for (Contact contact : contacts) {
+            Printer.print(index++ + ". " + contact.toString());
+        }
+
+        String choice = inputString("\nEnter the number of the contact you want to update");
+        int contactIndex = parseContactChoice(choice, contacts.size());
+        Contact selectedContact = contacts.get(contactIndex);
+
+        String newType = inputString("\nEnter the new type of the contact (email/phone)");
+        if (!newType.equalsIgnoreCase("email") && !newType.equalsIgnoreCase("phone")) {
+            throw new IOException("Invalid contact type. Must be 'email' or 'phone'.");
+        }
+
+        String newValue = inputString("\nEnter the new value of the contact");
+        if (newValue.isEmpty()) {
+            throw new IOException("Contact value cannot be empty.");
+        }
+
+        selectedContact.setType(newType);
+        selectedContact.setValue(newValue);
+        return selectedContact;
     }
+
+    private static int parseContactChoice(String choice, int totalContacts) throws IOException {
+        try {
+            int contactIndex = Integer.parseInt(choice) - 1;
+            if (contactIndex < 0 || contactIndex >= totalContacts) {
+                throw new IOException("Invalid contact number.");
+            }
+            return contactIndex;
+        } catch (NumberFormatException e) {
+            throw new IOException("Invalid input. Please enter a valid number.");
+        }
+    }
+
+
+
+    // Method for updating customer address
     public static Customer updateAddress() throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        Printer.printBlue("\n-----------Update customer address-----------");
-        Printer.print("\nFiscal code: ");
-        String fiscalCode = reader.readLine().trim();
-        Printer.print("\nNew address: ");
-        String address = reader.readLine().trim();
-        Printer.print("\nNew city: ");
-        String city = reader.readLine().trim();
-        Printer.print("\nNew CAP: ");
-        String cap = reader.readLine().trim();
+        Printer.printBlue("-----------Update customer address-----------");
+        String fiscalCode = inputString(FISCAL_CODE);
+        String address = inputString("Address");
+        String city = inputString("City");
+        String cap = inputString("CAP");
         return new Customer(fiscalCode, address, city, cap);
     }
 
+    public static LocalDate[] reportCustomer() throws IOException {
+        Printer.printBlue("\n-----------Report customer-----------");
+        LocalDate start = inputDateWithValidation("Start date (YYYY-MM-DD)");
+        LocalDate end = inputDateWithValidation("End date (YYYY-MM-DD)");
+
+        Printer.printGreen("\nReport will be generated for the range: " + start + " - " + end);
+        return new LocalDate[]{start, end};
+    }
+
+    private static LocalDate inputDateWithValidation(String prompt) throws IOException {
+        LocalDate date = null;
+        while (date == null) {
+            date = inputDate(prompt);
+        }
+        return date;
+    }
 }
 
 
