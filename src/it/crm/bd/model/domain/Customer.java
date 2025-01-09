@@ -110,7 +110,7 @@ public class Customer {
     // toString per la stampa dell'oggetto
     @Override
     public String toString() {
-        return "--------------"+ name+ surname+ "'s data--------------" +
+        return "\n--------------"+ name+ surname+ "'s data--------------" +
                 "\n |Fiscal code: " + fiscalCode +"|" +
                 "\n |Birthdate: " + birthdate +"|" +
                 "\n |Registration date: " + registrationDate + "|" +

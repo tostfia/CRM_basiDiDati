@@ -52,7 +52,7 @@ public class CustomerProcedureDAO implements GenericProcedureDAO<List<Customer>>
     /**
      * Mappa un oggetto Customer dai dati del ResultSet.
      */
-    private Customer mapCustomer(ResultSet rs, List<Customer> customers) throws SQLException {
+    private void mapCustomer(ResultSet rs, List<Customer> customers) throws SQLException {
         // Estrazione dati cliente
         String fiscalCode = rs.getString("cliente_codicefiscale");
 
@@ -98,7 +98,6 @@ public class CustomerProcedureDAO implements GenericProcedureDAO<List<Customer>>
             }
         }
 
-        return customer;
     }
 }
 

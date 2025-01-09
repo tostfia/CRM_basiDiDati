@@ -2,10 +2,12 @@ package it.crm.bd.view;
 
 import it.crm.bd.other.Printer;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Scanner;
+import java.io.InputStreamReader;
 
-public class SegreteriaView {
+public class SegreteriaView extends CommonView {
+    public SegreteriaView() {super();}
     public static int showMenu() throws IOException {
         Printer.printBlue("\n*********************************");
         Printer.printBlue("\n*    SECRETARY DASHBOARD    *");
@@ -19,16 +21,14 @@ public class SegreteriaView {
         Printer.printBlue("\n6) Update  customer's phone number or email");
         Printer.printBlue("\n7) Quit");
 
-        Scanner input= new Scanner(System.in);
-        int choice=0;
-        while(true){
-            Printer.print("\nPlease enter your choice: ");
-            choice= input.nextInt();
-            if(choice>=1 && choice<=7){
-                break;
+        int choice;
+        do {
+            choice = inputInt(new BufferedReader(new InputStreamReader(System.in)));
+            if (choice < 1 || choice > 7) {
+                Printer.errorPrint("Invalid choice. Please select a number between 1 and 6.");
             }
-            Printer.errorPrint("Invalid option");
-        }
+        } while (choice < 1 || choice > 7);
+
         return choice;
 
     }

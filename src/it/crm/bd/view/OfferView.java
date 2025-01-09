@@ -8,13 +8,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class OfferView {
+public class OfferView extends CommonView {
+    public OfferView() {super();}
     public static Offer insertOffer() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        Printer.println("Insert offer type(PROMOTIONAL,DISCOUNT,GIFT,OTHER):");
-        OffersType type = OffersType.valueOf(reader.readLine());
-        Printer.println("Insert offer description:");
-        String description = reader.readLine();
+        Printer.printBlue("\n---------------Insert Offer---------------\n");
+        OffersType type = OffersType.valueOf(inputString(reader, "Offer (PROMOTIONAL,DISCOUNT,GIFT,OTHER)"));
+        String description = inputString(reader, "Description");
         return new Offer(type, description);
 
     }

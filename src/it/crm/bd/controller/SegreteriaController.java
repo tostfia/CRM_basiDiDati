@@ -1,6 +1,6 @@
 package it.crm.bd.controller;
 
-import it.crm.bd.exception.DAOException;
+import it.crm.bd.exception.*;
 import it.crm.bd.model.dao.*;
 import it.crm.bd.model.domain.*;
 import it.crm.bd.other.Printer;
@@ -17,11 +17,11 @@ import java.util.List;
 public class SegreteriaController implements Controller {
 
     @Override
-    public void start() {
+    public void start() throws DataBaseOperationException, ServiceException, LoadException, InputException {
         try {
             ConnectionFactory.getConnection(Role.SEGRETERIA);
         } catch (SQLException |IOException  e) {
-            throw new RuntimeException("Error while connecting to the database: " + e.getMessage(), e);
+            throw new ServiceException("Error while connecting to the database: " + e.getMessage(), e);
 
         }
         while(true){
@@ -29,23 +29,24 @@ public class SegreteriaController implements Controller {
             try {
                 choice = SegreteriaView.showMenu();
             } catch(IOException e) {
-                throw new RuntimeException(e);
+                throw new LoadException("Error while showing menu: " + e.getMessage(), e);
             }
             switch(choice) {
                 case 1-> insertCustomer();
-                case 2-> insertOffer();
-                case 3-> reportCustomer();
-                case 4-> showCustomer();
-                case 5-> updateAddress();
-                case 6-> updateContacts();
-                case 7-> System.exit(0);
-                default -> throw new RuntimeException("Invalid choice");
+                case 2-> deleteCustomer();
+                case 3-> insertOffer();
+                case 4-> reportCustomer();
+                case 5-> showCustomer();
+                case 6-> updateAddress();
+                case 7-> updateContacts();
+                case 8-> System.exit(0);
+                default -> throw new InputException("Invalid choice.");
             }
         }
     }
-
-    private void showCustomer() {
-        try(Connection conn= ConnectionFactory.getConnection(Role.OPERATORE)) {
+    //Mostra cliente
+    private void showCustomer() throws DataBaseOperationException {
+        try(Connection conn= ConnectionFactory.getConnection(Role.SEGRETERIA)) {
             CustomerProcedureDAO customerDAO = new CustomerProcedureDAO();
             List<Customer> customers = customerDAO.execute(conn);
             if (customers.isEmpty()) {
@@ -56,13 +57,24 @@ public class SegreteriaController implements Controller {
                 }
             }
         }catch(DAOException | SQLException | IOException e){
-            throw new RuntimeException("Error while reporting customers: "+e.getMessage(),e);
+            throw new DataBaseOperationException("Error while showing customers: "+e.getMessage(),e);
+        }
+    }
+    //Elimina cliente
+    private void deleteCustomer() throws DataBaseOperationException{
+        try(Connection conn=ConnectionFactory.getConnection(Role.SEGRETERIA)) {
+            String fiscalCode = CustomerView.deleteCustomer();
+            DeleteCustomerProcedureDAO deleteCustomerDAO = new DeleteCustomerProcedureDAO();
+            deleteCustomerDAO.execute(fiscalCode, conn);
+            Printer.printBlue("Customer successfully deleted from the database.");
+        } catch (DAOException | SQLException | IOException e) {
+            throw new DataBaseOperationException("Error while deleting customer from the database: " + e.getMessage(), e);
         }
     }
 
 
-
-    private void updateContacts() {
+    //Aggiorna contatti
+    private void updateContacts() throws DataBaseOperationException {
         try {
             String fiscalCode = CustomerView.researchCustomerContact();
             List<Contact> contacts = fetchContacts(fiscalCode);
@@ -80,22 +92,23 @@ public class SegreteriaController implements Controller {
                 Printer.printBlue("Contacts successfully updated into the database.");
             }
         } catch (IOException e) {
-            handleException("Error while researching or updating customer contacts: " + e.getMessage(), e);
-        } catch (SQLException | DAOException e) {
-            handleException("Database error while updating contacts: " + e.getMessage(), e);
+            Printer.errorPrint("Input error: " + e.getMessage());
+        } catch (SQLException | DAOException | LoadException e) {
+            Printer.errorPrint("Database error while updating contacts: " + e.getMessage());
+            throw new DataBaseOperationException("Error while updating contacts: " + e.getMessage(), e);
         }
     }
-
-    private List<Contact> fetchContacts(String fiscalCode) throws SQLException, DAOException {
+    //Fetch dei contatti
+    private List<Contact> fetchContacts(String fiscalCode) throws SQLException, DAOException, LoadException {
         try (Connection conn = ConnectionFactory.getConnection(Role.SEGRETERIA)) {
             SearchContactProcedureDAO contactsDAO = new SearchContactProcedureDAO();
             return contactsDAO.execute(fiscalCode, conn);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new LoadException("Error while fetching contacts from input: " + e.getMessage(), e);
         }
     }
 
-
+    //Aggiorna contatto nel database
     private void updateContactInDatabase(Contact contact) throws SQLException, DAOException, IOException {
         try (Connection conn = ConnectionFactory.getConnection(Role.SEGRETERIA)) {
             UpdateContactsProcedureDAO contactDAO = new UpdateContactsProcedureDAO();
@@ -103,34 +116,32 @@ public class SegreteriaController implements Controller {
         }
     }
 
-    private void handleException(String message, Exception e) {
-        throw new RuntimeException(message, e);
-    }
 
-    private void updateAddress() {
+    //Aggiorna indirizzo
+    private void updateAddress() throws DataBaseOperationException, LoadException {
         Customer customer;
         try{
             customer= CustomerView.updateAddress();
         }catch (IOException e){
-            throw new RuntimeException("Error while updating address from input: "+e.getMessage(),e);
+            throw new LoadException("Error while creating customer from input: "+e.getMessage(),e);
         }
         try(Connection conn= ConnectionFactory.getConnection(Role.SEGRETERIA)){
             UpdateAddressProcedureDAO addressDAO = new UpdateAddressProcedureDAO();
             addressDAO.execute(customer, conn);
             Printer.printBlue("Address successfully updated into the database.");
         } catch (DAOException | SQLException | IOException e) {
-            throw new RuntimeException("Error while updating address into the database: " + e.getMessage(), e);
+            throw new DataBaseOperationException("Error while updating address into the database: " + e.getMessage(), e);
         }
     }
-
-    public void insertCustomer() {
+    //Inserimento cliente
+    public void insertCustomer() throws LoadException, DataBaseOperationException {
         Customer customer;
         try {
             // Step 1: Creazione del cliente tramite vista
             customer = CustomerView.insertCustomer();
         } catch (IOException e) {
             // Gestione errore input/output
-            throw new RuntimeException("Error while creating customer from input: " + e.getMessage(), e);
+            throw new LoadException("Error while creating customer from input: " + e.getMessage(), e);
         }
 
         try (Connection conn = ConnectionFactory.getConnection(Role.SEGRETERIA)) {
@@ -140,26 +151,27 @@ public class SegreteriaController implements Controller {
             Printer.printBlue("Customer successfully inserted into the database.");
         } catch (DAOException | SQLException | IOException e) {
             // Gestione errore DAO
-            throw new RuntimeException("Error while inserting customer into the database: " + e.getMessage(), e);
+            throw new DataBaseOperationException("Error while inserting customer into the database: " + e.getMessage(), e);
         }
     }
-
-    public void insertOffer() {
+    //Inserimento offerta
+    public void insertOffer() throws DataBaseOperationException, LoadException {
         Offer offer;
         try{
             offer= OfferView.insertOffer();
         }catch(IOException e){
-            throw new RuntimeException("Error while creating offer from input: "+e.getMessage(),e);
+            throw new LoadException("Error while creating offer from input: "+e.getMessage(),e);
         }
         try(Connection conn= ConnectionFactory.getConnection(Role.SEGRETERIA)){
             InsertOfferProcedureDAO offerDAO = new InsertOfferProcedureDAO();
             offerDAO.execute(offer, conn);
             Printer.printBlue("Offer successfully inserted into the database.");
         } catch (DAOException | SQLException | IOException e) {
-            throw new RuntimeException("Error while inserting offer into the database: " + e.getMessage(), e);
+            throw new DataBaseOperationException("Error while inserting offer into the database: " + e.getMessage(), e);
         }
     }
-    public void reportCustomer() {
+    //Report cliente
+    public void reportCustomer() throws LoadException {
         try {
             // Ottieni il range di date dall'utente
             LocalDate[] range = CustomerView.reportCustomer();
@@ -179,11 +191,11 @@ public class SegreteriaController implements Controller {
                 }
             } catch (DAOException | SQLException e) {
                 Printer.errorPrint("Database error while generating report: " + e.getMessage());
-                throw new RuntimeException("Error while generating report: " + e.getMessage(), e);
+                throw new DataBaseOperationException("Error while generating report: " + e.getMessage(), e);
             }
-        } catch (IOException e) {
+        } catch (IOException | DataBaseOperationException e) {
             Printer.errorPrint("Input error: " + e.getMessage());
-            throw new RuntimeException("Error while creating report from input: " + e.getMessage(), e);
+            throw new LoadException("Error while generating report: " + e.getMessage(), e);
         }
     }
 

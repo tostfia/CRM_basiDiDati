@@ -7,14 +7,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class LoginView {
+public class LoginView extends CommonView{
+    public LoginView() {super();}
     public static Credentials authenticate() throws IOException{
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Printer.printBlue("-----------Login-----------\n");
-        Printer.print("-username: ");
-        String username = reader.readLine();
-        Printer.print("-password: ");
-        String password = reader.readLine();
+        String username = inputString(reader, "Username");
+        String password = inputString(reader, "Password");
         return new Credentials(username, password, null);
     }
 }

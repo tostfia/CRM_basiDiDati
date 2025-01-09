@@ -7,58 +7,58 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.List;
+
 
 public class InsertCustomerProcedureDAO implements GenericProcedureDAO<Customer> {
 
     @Override
-    public Customer execute(Object... params) throws DAOException {
+    public Customer execute(Object... params) throws DAOException, SQLException {
         // Validazione parametri
-        if (params == null || params.length == 0 || !(params[0] instanceof Customer customer)) {
-            throw new DAOException("Invalid parameters: A valid Customer object is required.");
+        if (params == null || params.length != 2 || !(params[0] instanceof Customer customer) || !(params[1] instanceof Connection conn)) {
+            throw new DAOException("Invalid parameters: A valid Customer object and Connection are required.");
         }
-        Connection conn;
-        try {
-            // Verifica che la connessione non sia nulla (il cambio di ruolo avviene tramite la connessione per ruolo)
-            conn = (Connection) params[1];
-            if (conn == null || conn.isClosed()) {
-                throw new DAOException("Connection is closed or null.");
-            }
-            try (CallableStatement cs = conn.prepareCall("{call insertCustomer(?,?,?,?,?,?,?,?,?,?)}")) {
 
-                // Imposta i parametri per la stored procedure
-                cs.setString(1, customer.getFiscalCode());
-                cs.setString(2, customer.getName());
-                cs.setString(3, customer.getSurname());
-                cs.setDate(4, Date.valueOf(customer.getBirthdate()));
-                cs.setDate(5, Date.valueOf(customer.getRegistrationDate())); // Data di registrazione
-                cs.setString(6, convertListToCSV(customer.getEmails())); // Emails come stringa CSV
-                cs.setString(7, convertListToCSV(customer.getPhones())); // Phones come stringa CSV
-                cs.setString(8, customer.getCap());
-                cs.setString(9, customer.getAddress());
-                cs.setString(10, customer.getCity());
-
-                // Esegue la stored procedure
-                cs.executeUpdate();
-
-                // Restituisce l'oggetto Customer
-                return customer;
-            } catch (SQLException e) {
-                // Gestione eccezioni
-                throw new DAOException("Error executing stored procedure 'insertCustomer': " + e.getMessage(), e);
-            }
-        } catch (SQLException e) {
-            // Gestione eccezioni
-            throw new DAOException("Error while executing stored procedure 'insertCustomer': " + e.getMessage(), e);
+        if (conn.isClosed()) {
+            throw new DAOException("Connection is closed or null.");
         }
-    }
 
-    /**
-     * Converte una lista di stringhe in una stringa CSV.
-     * @param list La lista di stringhe da convertire.
-     * @return Una stringa con elementi separati da virgola, o una stringa vuota se la lista è null o vuota.
-     */
-    private String convertListToCSV(List<String> list) {
-        return (list == null || list.isEmpty()) ? "" : String.join(",", list);
+        // Inizio della transazione - gestita dalle stored procedure
+        try (CallableStatement cs = conn.prepareCall("{call insertCustomer(?,?,?,?,?,?,?,?)}")) {
+            // Esegui il primo inserimento: Cliente e indirizzo
+            cs.setString(1, customer.getFiscalCode());
+            cs.setString(2, customer.getName());
+            cs.setString(3, customer.getSurname());
+            cs.setDate(4, Date.valueOf(customer.getBirthdate()));
+            cs.setDate(5, Date.valueOf(customer.getRegistrationDate()));
+            cs.setString(6, customer.getCap());
+            cs.setString(7, customer.getAddress());
+            cs.setString(8, customer.getCity());
+            cs.executeUpdate();
+        }
+
+        // Inserimento delle email
+        if (customer.getEmails() != null && !customer.getEmails().isEmpty()) {
+            for (String email : customer.getEmails()) {
+                try (CallableStatement cs = conn.prepareCall("{call insertEmail(?,?)}")) {
+                    cs.setString(1, customer.getFiscalCode());
+                    cs.setString(2, email);
+                    cs.executeUpdate();
+                }
+            }
+        }
+
+        // Inserimento dei numeri di telefono
+        if (customer.getPhones() != null && !customer.getPhones().isEmpty()) {
+            for (String phone : customer.getPhones()) {
+                try (CallableStatement cs = conn.prepareCall("{call insertPhone(?,?)}")) {
+                    cs.setString(1, customer.getFiscalCode());
+                    cs.setString(2, phone);
+                    cs.executeUpdate();
+                }
+            }
+        }
+
+        // Restituisce l'oggetto Customer
+        return customer;
     }
 }

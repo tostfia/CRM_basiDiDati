@@ -7,23 +7,21 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class NoteView {
+public class NoteView extends CommonView{
+    public NoteView() {super();}
     public static Note writeNotes() throws IOException{
         BufferedReader reader = new BufferedReader(new java.io.InputStreamReader(System.in));
         Printer.printlnBlue("\n---------------Write Notes---------------\n");
         String customer = inputString(reader, "Customer");
-        Boolean outcome = inputBoolean(reader, "Outcome (accepted/refused)");
+        Boolean outcome = inputBoolean(reader);
         String description = inputString(reader, "Description");
         return new Note(outcome, description, customer);
     }
-    private static String inputString(BufferedReader reader, String prompt) throws IOException {
-        Printer.print(prompt + ": ");
-        return reader.readLine().trim();
-    }
-    private static Boolean inputBoolean(BufferedReader reader, String prompt) throws IOException {
+    //Metodo per il risultato
+    private static Boolean inputBoolean(BufferedReader reader) throws IOException {
         Boolean outcome = null;
         while (outcome == null) {
-            Printer.print(prompt + ": ");
+            Printer.print("Outcome (accepted/refused)" + ": ");
             String input = reader.readLine().trim();
             if (input.equalsIgnoreCase("accepted")) {
                 outcome = true;
@@ -35,6 +33,7 @@ public class NoteView {
         }
         return outcome;
     }
+    //Metodo per chiamare le note
     public static String callNotes() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Printer.printlnBlue("\n---------------Customer's notes report---------------\n");
