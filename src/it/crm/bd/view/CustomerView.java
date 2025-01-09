@@ -1,5 +1,7 @@
 package it.crm.bd.view;
 
+import it.crm.bd.controller.SegreteriaController;
+import it.crm.bd.exception.DataBaseOperationException;
 import it.crm.bd.model.domain.Contact;
 import it.crm.bd.model.domain.Customer;
 import it.crm.bd.other.Printer;
@@ -28,9 +30,7 @@ public class CustomerView  extends CommonView{
         String address = inputString(reader,"Address");
         String city = inputString(reader,"City");
         String cap = inputString(reader,"CAP");
-        LocalDate registrationDate = inputDate(reader,"Registration date (YYYY-MM-DD)");
-
-        return new Customer(name, surname, birthDate, fiscalCode, phones, address, city, cap, emails, registrationDate);
+        return new Customer(name, surname, birthDate, fiscalCode, phones, address, city, cap, emails);
     }
 
 
@@ -159,9 +159,12 @@ public class CustomerView  extends CommonView{
         return date;
     }
 
-    public static String deleteCustomer() throws IOException {
-        Printer.printBlue("-----------Delete customer-----------");
-        String fiscalCode = inputString(reader,FISCAL_CODE);
+    public static String deleteCustomer() throws IOException, DataBaseOperationException {
+        Printer.printBlue("\n-----------Delete customer-----------");
+        SegreteriaController controller = new SegreteriaController();
+        controller.showCustomer();
+        Printer.print("\nEnter the fiscal code of the customer you want to delete:");
+        String fiscalCode = reader.readLine().trim();
         if (fiscalCode.isEmpty()) {
             throw new IOException("Fiscal code cannot be empty.");
         }

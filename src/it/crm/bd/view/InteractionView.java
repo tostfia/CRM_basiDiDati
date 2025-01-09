@@ -19,9 +19,8 @@ public class InteractionView  extends CommonView{
         Time time = inputTime(reader);
         String customer = inputString(reader, "Customer");
         OffersType offer = OffersType.valueOf(inputString(reader, "Offer (PROMOTIONAL,DISCOUNT,GIFT,OTHER)"));
-        String operator = inputString(reader, "Operator");
         //Return un nuovo oggetto interazione
-        return new Interaction(date, time, customer,offer,operator);
+        return new Interaction(date, time, customer,offer);
     }
 
 

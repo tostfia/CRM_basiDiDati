@@ -45,7 +45,7 @@ public class SegreteriaController implements Controller {
         }
     }
     //Mostra cliente
-    private void showCustomer() throws DataBaseOperationException {
+    public void showCustomer() throws DataBaseOperationException {
         try(Connection conn= ConnectionFactory.getConnection(Role.SEGRETERIA)) {
             CustomerProcedureDAO customerDAO = new CustomerProcedureDAO();
             List<Customer> customers = customerDAO.execute(conn);
@@ -61,20 +61,25 @@ public class SegreteriaController implements Controller {
         }
     }
     //Elimina cliente
-    private void deleteCustomer() throws DataBaseOperationException{
-        try(Connection conn=ConnectionFactory.getConnection(Role.SEGRETERIA)) {
-            String fiscalCode = CustomerView.deleteCustomer();
-            DeleteCustomerProcedureDAO deleteCustomerDAO = new DeleteCustomerProcedureDAO();
-            deleteCustomerDAO.execute(fiscalCode, conn);
+    public void deleteCustomer() throws DataBaseOperationException, LoadException {
+        String fiscalCode;
+        try{
+            fiscalCode= CustomerView.deleteCustomer();
+        }catch(IOException e){
+            throw new LoadException("Error while deleting customer: "+e.getMessage(),e);
+        }try(Connection conn= ConnectionFactory.getConnection(Role.SEGRETERIA)) {
+            DeleteCustomerProcedureDAO customerDAO = new DeleteCustomerProcedureDAO();
+            customerDAO.execute(fiscalCode, conn);
             Printer.printBlue("Customer successfully deleted from the database.");
         } catch (DAOException | SQLException | IOException e) {
             throw new DataBaseOperationException("Error while deleting customer from the database: " + e.getMessage(), e);
         }
+
     }
 
 
     //Aggiorna contatti
-    private void updateContacts() throws DataBaseOperationException {
+    public void updateContacts() throws DataBaseOperationException {
         try {
             String fiscalCode = CustomerView.researchCustomerContact();
             List<Contact> contacts = fetchContacts(fiscalCode);
@@ -99,7 +104,7 @@ public class SegreteriaController implements Controller {
         }
     }
     //Fetch dei contatti
-    private List<Contact> fetchContacts(String fiscalCode) throws SQLException, DAOException, LoadException {
+    public List<Contact> fetchContacts(String fiscalCode) throws SQLException, DAOException, LoadException {
         try (Connection conn = ConnectionFactory.getConnection(Role.SEGRETERIA)) {
             SearchContactProcedureDAO contactsDAO = new SearchContactProcedureDAO();
             return contactsDAO.execute(fiscalCode, conn);
@@ -109,7 +114,7 @@ public class SegreteriaController implements Controller {
     }
 
     //Aggiorna contatto nel database
-    private void updateContactInDatabase(Contact contact) throws SQLException, DAOException, IOException {
+    public void updateContactInDatabase(Contact contact) throws SQLException, DAOException, IOException {
         try (Connection conn = ConnectionFactory.getConnection(Role.SEGRETERIA)) {
             UpdateContactsProcedureDAO contactDAO = new UpdateContactsProcedureDAO();
             contactDAO.execute(contact, conn);
@@ -118,7 +123,7 @@ public class SegreteriaController implements Controller {
 
 
     //Aggiorna indirizzo
-    private void updateAddress() throws DataBaseOperationException, LoadException {
+    public  void updateAddress() throws DataBaseOperationException, LoadException {
         Customer customer;
         try{
             customer= CustomerView.updateAddress();

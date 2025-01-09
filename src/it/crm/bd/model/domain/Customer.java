@@ -24,7 +24,7 @@ public class Customer {
     // Construttore con parametri
     public Customer(String name, String surname, LocalDate birthdate, String fiscalCode,
                     List<String> phones, String address, String city, String cap,
-                    List<String> emails, LocalDate registrationDate) {
+                    List<String> emails) {
         this.name = name;
         this.surname = surname;
         this.birthdate = birthdate;
@@ -34,7 +34,6 @@ public class Customer {
         this.city = city;
         this.cap = cap;
         this.emails = emails != null ? emails : new ArrayList<>();
-        this.registrationDate = registrationDate;
     }
 
     // Metodo per indirizzi

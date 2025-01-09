@@ -17,34 +17,23 @@ public class DeleteCustomerProcedureDAO implements GenericProcedureDAO<Customer>
         }
 
         try {
-            // Verifica che la connessione non sia nulla e non sia chiusa
-            if (conn == null || conn.isClosed()) {
+            if (conn.isClosed()) {
                 throw new DAOException("Connection is closed or null.");
             }
-
-            // Esegui la stored procedure di cancellazione
             try (CallableStatement cs = conn.prepareCall("{call deleteCustomer(?)}")) {
-                // Imposta il parametro per la stored procedure (il codice fiscale del cliente)
+                // Imposta i parametri per la stored procedure
                 cs.setString(1, fiscalcode);
 
-                // Esegui l'aggiornamento (eliminazione)
-                int affectedRows = cs.executeUpdate();
+                // Esegue la stored procedure
+                cs.executeUpdate();
 
-                // Se l'eliminazione ha avuto successo, restituisci l'oggetto Customer con il codice fiscale eliminato
-                // Oppure, in base alla logica aziendale, puoi restituire null se il cliente è stato eliminato con successo
-                if (affectedRows > 0) {
-                    return null;
-                } else {
-                    // Se non è stato trovato nessun cliente da eliminare
-                    throw new DAOException("No customer found with fiscal code: " + fiscalcode);
-                }
+                return null;// Restituisce null in quanto non c'è nessun oggetto da restituire
 
             } catch (SQLException e) {
-                // Gestione errori durante l'esecuzione della stored procedure
+                // Gestione eccezioni
                 throw new DAOException("Error executing stored procedure 'deleteCustomer': " + e.getMessage(), e);
             }
         } catch (SQLException e) {
-            // Gestione errori generali
             throw new DAOException("Error while executing stored procedure 'deleteCustomer': " + e.getMessage(), e);
         }
     }

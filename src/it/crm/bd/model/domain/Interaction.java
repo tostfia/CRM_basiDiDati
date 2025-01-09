@@ -6,15 +6,14 @@ import java.time.LocalDate;
 public class Interaction {
     public LocalDate date;
     public Time time;
-    public String Customer;
+    public String customer;
     public OffersType  Offer;
-    public String Operator;
-    public Interaction(LocalDate date, Time time, String customer, OffersType offer, String operator) {
+
+    public Interaction(LocalDate date, Time time, String customer, OffersType offer) {
         this.date = date;
         this.time = time;
-        Customer = customer;
+        this.customer = customer;
         this.Offer = offer;
-        this.Operator=operator;
     }
     public LocalDate getDate() {
         return date;
@@ -29,31 +28,23 @@ public class Interaction {
         this.time = time;
     }
     public String getCustomer() {
-        return Customer;
+        return customer;
     }
-    public void setCustomer(String customer) {
-        Customer = customer;
-    }
+    public void setCustomer(String customer) {this.customer = customer;}
     public OffersType getOffer() {
         return Offer;
     }
     public void setOffer(OffersType offer) {
         Offer = offer;
     }
-    public String getOperator() {
-        return Operator;
-    }
-    public void setOperator(String operator) {
-        Operator = operator;
-    }
+
     @Override
     public String toString(){
         return "Interaction{" +
                 "date=" + date +
                 ", time=" + time +
-                ", Customer='" + Customer + '\'' +
+                ", Customer='" + customer + '\'' +
                 ", Offer='" + Offer + '\'' +
-                ", Operator='" + Operator + '\'' +
                 '}';
     }
 }

@@ -127,8 +127,10 @@ public class OperatoreController implements Controller {
             if (customers.isEmpty()) {
                 Printer.errorPrint("No customers found in the database.");
             } else {
+                int count = 1;
                 for (Customer customer : customers) {
-                    Printer.printGreen(customer.toString());
+                    Printer.printGreen(count+"."+customer.toString());
+                    count++;
                 }
             }
         }catch(DAOException | SQLException | IOException e){
