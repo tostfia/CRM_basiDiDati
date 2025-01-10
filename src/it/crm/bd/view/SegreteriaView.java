@@ -20,16 +20,17 @@ public class SegreteriaView extends CommonView {
         Printer.printBlue("\n5) Show customer");
         Printer.printBlue("\n6) Update  customer's address");
         Printer.printBlue("\n7) Update  customer's phone number or email");
-        Printer.printlnBlue("\n8) Show offers");
-        Printer.printBlue("\n9) Quit");
+        Printer.printBlue("\n8) Show offers");
+        Printer.printBlue("\n9) Show appointments");
+        Printer.printBlue("\n10) Quit");
 
         int choice;
         do {
             choice = inputInt(new BufferedReader(new InputStreamReader(System.in)));
-            if (choice < 1 || choice > 9) {
+            if (choice < 1 || choice > 10) {
                 Printer.errorPrint("Invalid choice. Please select a number between 1 and 6.");
             }
-        } while (choice < 1 || choice > 9);
+        } while (choice < 1 || choice > 10);
 
         return choice;
 

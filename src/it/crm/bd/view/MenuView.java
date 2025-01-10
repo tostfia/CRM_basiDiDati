@@ -19,9 +19,9 @@ public class MenuView extends CommonView {
         Printer.printlnBlue("\n********   CRM SYSTEM    ********");
         Printer.printlnBlue("\n*********************************");
         Printer.printlnBlue("\n*** What should I do for you? ***");
-        Printer.printlnBlue("             1.Login               ");
-        Printer.printlnBlue("             2.Register            ");
-        Printer.printlnBlue("             3.Exit                ");
+        Printer.printlnBlue("1. Login                           ");
+        Printer.printlnBlue("2. Register                        ");
+        Printer.printlnBlue("3. Exit                            ");
         Printer.printlnBlue("*********************************\n");
         return inputInt(reader);
     }

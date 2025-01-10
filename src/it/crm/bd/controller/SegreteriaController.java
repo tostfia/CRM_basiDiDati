@@ -39,8 +39,9 @@ public class SegreteriaController implements Controller {
                 case 5-> showCustomer();
                 case 6-> updateAddress();
                 case 7-> updateContacts();
-                case 8-> showOffers();
-                case 9-> System.exit(0);
+                case 8-> showAppointments();
+                case 9-> showOffers();
+                case 10-> System.exit(0);
                 default -> throw new InputException("Invalid choice.");
             }
         }
@@ -220,6 +221,24 @@ public class SegreteriaController implements Controller {
         } catch (IOException | DataBaseOperationException e) {
             Printer.errorPrint("Input error: " + e.getMessage());
             throw new LoadException("Error while generating report: " + e.getMessage(), e);
+        }
+    }
+    //Mostra gli appuntamenti
+    public void showAppointments() throws DataBaseOperationException {
+        try(Connection conn= ConnectionFactory.getConnection(Role.SEGRETERIA)) {
+            AppointmentProcedureDAO appointmentDAO = new AppointmentProcedureDAO();
+            List<Appointment> appointments = appointmentDAO.execute(conn);
+            if (appointments.isEmpty()) {
+                Printer.errorPrint("No appointments found in the database.");
+            } else {
+                int count=1;
+                for (Appointment appointment : appointments) {
+                    Printer.printGreen(count+"."+appointment.toString());
+                    count++;
+                }
+            }
+        }catch(DAOException | SQLException | IOException e){
+            throw new DataBaseOperationException("Error while showing appointments: "+e.getMessage(),e);
         }
     }
 

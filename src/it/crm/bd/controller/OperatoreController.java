@@ -37,7 +37,8 @@ public class OperatoreController implements Controller {
                 case 4-> addAppointment();
                 case 5-> showCustomers();
                 case 6-> showOffers();
-                case 7-> System.exit(0);
+                case 7-> showAppointments();
+                case 8-> System.exit(0);
                 default -> throw new InputException("Invalid choice.");
             }
         }
@@ -156,6 +157,24 @@ public class OperatoreController implements Controller {
             }
         }catch(DAOException | SQLException | IOException e){
             throw new DataBaseOperationException("Error while fetching offers: "+e.getMessage(),e);
+        }
+    }
+    //Mostra gli appuntamenti
+    public void showAppointments() throws DataBaseOperationException {
+        try(Connection conn= ConnectionFactory.getConnection(Role.OPERATORE)){
+            AppointmentProcedureDAO appointmentDAO= new AppointmentProcedureDAO();
+            List<Appointment> appointments= appointmentDAO.execute(conn);
+            if(appointments.isEmpty()){
+                Printer.errorPrint("No appointments found in the database.");
+            }else{
+                int count=1;
+                for(Appointment appointment: appointments){
+                    Printer.printGreen("\n"+count+"."+appointment.toString());
+                    count++;
+                }
+            }
+        }catch(DAOException | SQLException | IOException e){
+            throw new DataBaseOperationException("Error while fetching appointments: "+e.getMessage(),e);
         }
     }
 }

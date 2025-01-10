@@ -16,6 +16,9 @@ public class Appointment {
         this.branch = branch;
         this.operator = operator;
     }
+
+    public Appointment() {}
+
     public String getCustomer() {
         return customer;
     }
@@ -41,15 +44,18 @@ public class Appointment {
         this.branch = branch;
     }
     public String getOperator() {return operator;}
+    public void setOperator(String operator) {this.operator = operator;}
     @Override
     public String toString() {
-        return "Appointment{" +
-                "customer='" + customer + '\'' +
-                ", date=" + date +
-                ", time=" + time +
-                ", branch='" + branch + '\'' +
-                '}';
+        return "--------Appointment--------\n" +
+                "|Customer: " + customer + "|\n" +
+                "|Date: " + date + "|\n" +
+                "|Time: " + time + "|\n" +
+                "|Branch: " + branch + "|\n" +
+                "|Operator: " + operator + "|\n" +
+                "---------------------------";
     }
+
 
 
 }
