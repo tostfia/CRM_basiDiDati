@@ -4,17 +4,20 @@ import java.sql.Time;
 import java.time.LocalDate;
 
 public class Interaction {
-    public LocalDate date;
-    public Time time;
-    public String customer;
-    public OffersType  Offer;
+    private LocalDate date;
+    private  Time time;
+    private  String customer;
+    private  String Offer;
+    private String operator;
 
-    public Interaction(LocalDate date, Time time, String customer, OffersType offer) {
+    public Interaction(LocalDate date, Time time, String customer, String offer,String operator) {
         this.date = date;
         this.time = time;
         this.customer = customer;
         this.Offer = offer;
+        this.operator = operator;
     }
+    public String getOperator() {return operator;}
     public LocalDate getDate() {
         return date;
     }
@@ -31,12 +34,9 @@ public class Interaction {
         return customer;
     }
     public void setCustomer(String customer) {this.customer = customer;}
-    public OffersType getOffer() {
-        return Offer;
-    }
-    public void setOffer(OffersType offer) {
-        Offer = offer;
-    }
+
+    public String getOffer() {return Offer;}
+    public void setOffer(String offer) {this.Offer = offer;}
 
     @Override
     public String toString(){
@@ -47,4 +47,6 @@ public class Interaction {
                 ", Offer='" + Offer + '\'' +
                 '}';
     }
+
+
 }

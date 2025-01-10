@@ -24,12 +24,13 @@ public class InsertInteractionProcedureDAO implements GenericProcedureDAO<Intera
             if (conn.isClosed()) {
                 throw new DAOException("Connection is closed or null.");
             }
-            try (CallableStatement cs = conn.prepareCall("{call insertInteraction(?,?,?,?)}")) {
+            try (CallableStatement cs = conn.prepareCall("{call insertInteraction(?,?,?,?,?)}")) {
                 // Imposta i parametri per la stored procedure
                 cs.setDate(1, Date.valueOf(interaction.getDate()));
                 cs.setTime(2, interaction.getTime());
                 cs.setString(3, interaction.getCustomer());
-                cs.setInt(4, interaction.getOffer().getId());
+                cs.setString(4, interaction.getOffer());
+                cs.setString(5, interaction.getOperator());
 
                 // Esegue la stored procedure
                 cs.executeUpdate();

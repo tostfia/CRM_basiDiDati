@@ -30,7 +30,8 @@ public class CustomerView  extends CommonView{
         String address = inputString(reader,"Address");
         String city = inputString(reader,"City");
         String cap = inputString(reader,"CAP");
-        return new Customer(name, surname, birthDate, fiscalCode, phones, address, city, cap, emails);
+        String segreteria = inputString(reader,"Segreteria");
+        return new Customer(name, surname, birthDate, fiscalCode, phones, address, city, cap, emails,segreteria);
     }
 
 

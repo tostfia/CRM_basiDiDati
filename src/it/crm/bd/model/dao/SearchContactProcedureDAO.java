@@ -15,13 +15,12 @@ public class SearchContactProcedureDAO implements GenericProcedureDAO<List<Conta
     @Override
     public List<Contact> execute(Object... params) throws DAOException, SQLException {
         // Verifica che i parametri siano corretti
-        if (params == null || params.length < 2 || !(params[0] instanceof String fiscalCode)) {
+        if (params == null || params.length < 2 || !(params[0] instanceof String fiscalCode) || !(params[1] instanceof Connection conn)) {
             throw new DAOException("Invalid input parameters: A fiscalCode string and a valid Connection are required.");
         }
 
         // Ottieni la connessione dal secondo parametro
-        Connection conn = (Connection) params[1];
-        if (conn == null || conn.isClosed()) {
+        if (conn.isClosed()) {
             throw new DAOException("Connection is closed or null.");
         }
 
@@ -31,7 +30,6 @@ public class SearchContactProcedureDAO implements GenericProcedureDAO<List<Conta
         // Prepara la chiamata alla stored procedure
         try (CallableStatement cs = conn.prepareCall("{call searchContact(?)}")) {
             // Imposta il parametro di input per la stored procedure (Codice fiscale del cliente)
-            fiscalCode = (String) params[0]; // otteniamo il codice fiscale dal primo parametro
             cs.setString(1, fiscalCode);
 
             // Esegui la stored procedure

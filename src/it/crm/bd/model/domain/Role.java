@@ -4,7 +4,7 @@ public enum Role {
     SEGRETERIA(1),
     OPERATORE(2),
     NON_RICONOSCIUTO(3);//valore di fallback
-    private int id;
+    private final int id;
 
     Role(int id) {
         this.id = id;
@@ -21,5 +21,7 @@ public enum Role {
     public int getId() {
         return id;
     }
+
+
 }
 

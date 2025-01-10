@@ -18,7 +18,8 @@ public class AppointmentView extends CommonView {
         String branch = inputString(reader, "Branch");
         LocalDate date = inputDate(reader, "Date (YYYY-MM-DD)");
         Time time = inputTime(reader);
-        return new Appointment(customer, date, time, branch);
+        String operator = inputString(reader, "Operator");
+        return new Appointment(customer, date, time, branch,operator);
 
     }
 

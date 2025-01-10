@@ -36,7 +36,8 @@ public class OperatoreController implements Controller {
                 case 3-> callNotes();
                 case 4-> addAppointment();
                 case 5-> showCustomers();
-                case 6-> System.exit(0);
+                case 6-> showOffers();
+                case 7-> System.exit(0);
                 default -> throw new InputException("Invalid choice.");
             }
         }
@@ -95,8 +96,10 @@ public class OperatoreController implements Controller {
             if (notes.isEmpty()) {
                 Printer.errorPrint("No notes found for the customer.");
             } else {
+                int count = 1;
                 for (Note note : notes) {
-                    Printer.printGreen(note.toString());
+                    Printer.printGreen("\n"+count+"."+note.toString());
+                    count++;
                 }
             }
         } catch (DAOException | SQLException | IOException e) {
@@ -135,6 +138,24 @@ public class OperatoreController implements Controller {
             }
         }catch(DAOException | SQLException | IOException e){
             throw new DataBaseOperationException("Error while fetching customers: "+e.getMessage(),e);
+        }
+    }
+    //Mostra le offerte
+    public void showOffers() throws DataBaseOperationException {
+        try(Connection conn= ConnectionFactory.getConnection(Role.OPERATORE)){
+            OfferProcedureDAO offerDAO= new OfferProcedureDAO();
+            List<Offer> offers= offerDAO.execute(conn);
+            if(offers.isEmpty()){
+                Printer.errorPrint("No offers found in the database.");
+            }else{
+                int count=1;
+                for(Offer offer: offers){
+                    Printer.printGreen("\n"+count+"."+offer.toString());
+                    count++;
+                }
+            }
+        }catch(DAOException | SQLException | IOException e){
+            throw new DataBaseOperationException("Error while fetching offers: "+e.getMessage(),e);
         }
     }
 }

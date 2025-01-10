@@ -15,6 +15,7 @@ public class Customer {
     private String cap;
     private List<String> emails;
     private LocalDate registrationDate;
+    private String segreteria;
 
     // Construttore di default
     public Customer() {
@@ -24,7 +25,7 @@ public class Customer {
     // Construttore con parametri
     public Customer(String name, String surname, LocalDate birthdate, String fiscalCode,
                     List<String> phones, String address, String city, String cap,
-                    List<String> emails) {
+                    List<String> emails, String segreteria) {
         this.name = name;
         this.surname = surname;
         this.birthdate = birthdate;
@@ -34,6 +35,7 @@ public class Customer {
         this.city = city;
         this.cap = cap;
         this.emails = emails != null ? emails : new ArrayList<>();
+        this.segreteria = segreteria;
     }
 
     // Metodo per indirizzi
@@ -89,35 +91,27 @@ public class Customer {
     public String getCap() {
         return cap;
     }
-    public void setCap(String cap) {
-        if (cap.matches("\\d{5}")) {
-            this.cap = cap;
-        } else {
-            throw new IllegalArgumentException("CAP must be a 5-digit number.");
-        }
-    }
-    public List<String> getEmails() {
-        return emails;
-    }
-    public LocalDate getRegistrationDate() {
-        return registrationDate;
-    }
-    public void setRegistrationDate(LocalDate registrationDate) {
-        this.registrationDate = registrationDate;
-    }
+    public void setCap(String cap) {this.cap = cap;}
+    public List<String> getEmails() {return emails;}
+    public LocalDate getRegistrationDate() {return registrationDate;}
+    public void setRegistrationDate(LocalDate registrationDate) {this.registrationDate = registrationDate;}
+    public String getSegreteria() {return segreteria;}
 
     // toString per la stampa dell'oggetto
     @Override
     public String toString() {
         return "\n--------------"+ name+ surname+ "'s data--------------" +
-                "\n |Fiscal code: " + fiscalCode +"|" +
-                "\n |Birthdate: " + birthdate +"|" +
-                "\n |Registration date: " + registrationDate + "|" +
-                "\n |Phones: " + phones + "|" +
-                "\n |Emails: " + emails + "|" +
-                "\n |Address: " + address + "|" +
-                "\n |City: " + city + "|" +
-                "\n |CAP: " + cap + "|";
+                "\nName: " + name +
+                "\nSurname: " + surname +
+                "\nBirthdate: " + birthdate +
+                "\nFiscal Code: " + fiscalCode +
+                "\nPhones: " + phones +
+                "\nAddress: " + address +
+                "\nCity: " + city +
+                "\nCAP: " + cap +
+                "\nEmails: " + emails +
+                "\nRegistration Date: " + registrationDate +
+                "\nSegreteria: " + segreteria;
     }
 
 

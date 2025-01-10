@@ -8,11 +8,13 @@ public class Appointment {
     private LocalDate date;
     private Time time;
     private String branch;
-    public Appointment(String customer, LocalDate date, Time time, String branch) {
+    private String operator;
+    public Appointment(String customer, LocalDate date, Time time, String branch, String operator) {
         this.customer = customer;
         this.date = date;
         this.time = time;
         this.branch = branch;
+        this.operator = operator;
     }
     public String getCustomer() {
         return customer;
@@ -38,6 +40,7 @@ public class Appointment {
     public void setBranch(String branch) {
         this.branch = branch;
     }
+    public String getOperator() {return operator;}
     @Override
     public String toString() {
         return "Appointment{" +
@@ -47,4 +50,6 @@ public class Appointment {
                 ", branch='" + branch + '\'' +
                 '}';
     }
+
+
 }

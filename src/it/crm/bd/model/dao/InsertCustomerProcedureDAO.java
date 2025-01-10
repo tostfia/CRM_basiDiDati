@@ -23,7 +23,7 @@ public class InsertCustomerProcedureDAO implements GenericProcedureDAO<Customer>
         }
 
         // Inizio della transazione - gestita dalle stored procedure
-        try (CallableStatement cs = conn.prepareCall("{call insertCustomer(?,?,?,?,?,?,?)}")) {
+        try (CallableStatement cs = conn.prepareCall("{call insertCustomer(?,?,?,?,?,?,?,?)}")) {
             // Esegui il primo inserimento: Cliente e indirizzo
             cs.setString(1, customer.getFiscalCode());
             cs.setString(2, customer.getName());
@@ -32,6 +32,7 @@ public class InsertCustomerProcedureDAO implements GenericProcedureDAO<Customer>
             cs.setString(5, customer.getCap());
             cs.setString(6, customer.getAddress());
             cs.setString(7, customer.getCity());
+            cs.setString(8,customer.getSegreteria());
             cs.executeUpdate();
         }
 

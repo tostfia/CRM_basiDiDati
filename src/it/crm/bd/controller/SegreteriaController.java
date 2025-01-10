@@ -39,7 +39,8 @@ public class SegreteriaController implements Controller {
                 case 5-> showCustomer();
                 case 6-> updateAddress();
                 case 7-> updateContacts();
-                case 8-> System.exit(0);
+                case 8-> showOffers();
+                case 9-> System.exit(0);
                 default -> throw new InputException("Invalid choice.");
             }
         }
@@ -173,6 +174,24 @@ public class SegreteriaController implements Controller {
             Printer.printBlue("Offer successfully inserted into the database.");
         } catch (DAOException | SQLException | IOException e) {
             throw new DataBaseOperationException("Error while inserting offer into the database: " + e.getMessage(), e);
+        }
+    }
+    //Mostra offerte
+    public void showOffers() throws DataBaseOperationException {
+        try(Connection conn= ConnectionFactory.getConnection(Role.SEGRETERIA)) {
+            OfferProcedureDAO offerDAO = new OfferProcedureDAO();
+            List<Offer> offers = offerDAO.execute(conn);
+            if (offers.isEmpty()) {
+                Printer.errorPrint("No offers found in the database.");
+            } else {
+                int count=1;
+                for (Offer offer : offers) {
+                    Printer.printGreen(count+"."+offer.toString());
+                    count++;
+                }
+            }
+        }catch(DAOException | SQLException | IOException e){
+            throw new DataBaseOperationException("Error while showing offers: "+e.getMessage(),e);
         }
     }
     //Report cliente

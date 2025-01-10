@@ -19,13 +19,14 @@ public class InsertAppointmentProcedureDAO implements GenericProcedureDAO<Appoin
             if (conn == null || conn.isClosed()) {
                 throw new DAOException("Connection is null or closed");
             }
-            try (CallableStatement cs = conn.prepareCall("{call insertAppointment(?,?,?,?)}")) {
+            try (CallableStatement cs = conn.prepareCall("{call insertAppointment(?,?,?,?,?)}")) {
 
                 // Imposta i parametri della procedura
                 cs.setDate(1, Date.valueOf(appointment.getDate()));
                 cs.setTime(2, appointment.getTime());
                 cs.setString(3, appointment.getCustomer());
                 cs.setString(4, appointment.getBranch());
+                cs.setString(5, appointment.getOperator());
 
                 // Esegui l'operazione
                 cs.executeUpdate();

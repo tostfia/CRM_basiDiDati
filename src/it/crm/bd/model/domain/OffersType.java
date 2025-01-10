@@ -20,4 +20,13 @@ public enum OffersType {
     public int getId() {
         return id;
     }
+    @Override
+    public String toString() {
+        return switch (this) {
+            case PROMOTIONAL -> "Promotional";
+            case DISCOUNT -> "Discount";
+            case GIFT -> "Gift";
+            default -> "Other";
+        };
+    }
 }
