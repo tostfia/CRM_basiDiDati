@@ -3,7 +3,6 @@ package it.crm.bd.model.dao;
 import it.crm.bd.exception.DAOException;
 import it.crm.bd.model.domain.Credentials;
 import it.crm.bd.model.domain.Role;
-import it.crm.bd.other.Printer;
 
 import java.io.IOException;
 import java.sql.CallableStatement;

@@ -5,15 +5,12 @@ public class Contact {
     private String value;
     private String customer;
 
-    public Contact() {
-    }
-
-    public Contact(String value, String type, String customer) {
-        this.value = value;
+    public Contact() {}
+    public Contact(String type, String value, String customer) {
         this.type = type;
+        this.value = value;
         this.customer = customer;
     }
-
     public void setValue(String value) {this.value = value;}
     public String getType() {return type;}
     public void setType(String type) {this.type = type;}

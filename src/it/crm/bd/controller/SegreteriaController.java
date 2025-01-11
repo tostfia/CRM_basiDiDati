@@ -33,15 +33,14 @@ public class SegreteriaController implements Controller {
             }
             switch(choice) {
                 case 1-> insertCustomer();
-                case 2-> deleteCustomer();
-                case 3-> insertOffer();
-                case 4-> reportCustomer();
-                case 5-> showCustomer();
-                case 6-> updateAddress();
-                case 7-> updateContacts();
-                case 8-> showAppointments();
-                case 9-> showOffers();
-                case 10-> System.exit(0);
+                case 2-> insertOffer();
+                case 3-> reportCustomer();
+                case 4-> showCustomer();
+                case 5-> updateAddress();
+                case 6-> updateContacts();
+                case 7-> showAppointments();
+                case 8-> showOffers();
+                case 9-> System.exit(0);
                 default -> throw new InputException("Invalid choice.");
             }
         }
@@ -62,22 +61,7 @@ public class SegreteriaController implements Controller {
             throw new DataBaseOperationException("Error while showing customers: "+e.getMessage(),e);
         }
     }
-    //Elimina cliente
-    public void deleteCustomer() throws DataBaseOperationException, LoadException {
-        String fiscalCode;
-        try{
-            fiscalCode= CustomerView.deleteCustomer();
-        }catch(IOException e){
-            throw new LoadException("Error while deleting customer: "+e.getMessage(),e);
-        }try(Connection conn= ConnectionFactory.getConnection(Role.SEGRETERIA)) {
-            DeleteCustomerProcedureDAO customerDAO = new DeleteCustomerProcedureDAO();
-            customerDAO.execute(fiscalCode, conn);
-            Printer.printBlue("Customer successfully deleted from the database.");
-        } catch (DAOException | SQLException | IOException e) {
-            throw new DataBaseOperationException("Error while deleting customer from the database: " + e.getMessage(), e);
-        }
 
-    }
 
 
     //Aggiorna contatti
