@@ -38,8 +38,8 @@ public class SegreteriaController implements Controller {
                 case 4-> showCustomer();
                 case 5-> updateAddress();
                 case 6-> updateContacts();
-                case 7-> showAppointments();
-                case 8-> showOffers();
+                case 7-> showOffers();
+                case 8-> showAppointments();
                 case 9-> System.exit(0);
                 default -> throw new InputException("Invalid choice.");
             }
@@ -171,7 +171,7 @@ public class SegreteriaController implements Controller {
             } else {
                 int count=1;
                 for (Offer offer : offers) {
-                    Printer.printGreen(count+"."+offer.toString());
+                    Printer.printGreen("\n"+count+"."+offer.toString());
                     count++;
                 }
             }
