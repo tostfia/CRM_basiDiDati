@@ -17,6 +17,9 @@ public enum OffersType {
             default -> OTHER;
         };
     }
+    public static int get(OffersType type) {
+        return type.getId();
+    }
     public int getId() {
         return id;
     }

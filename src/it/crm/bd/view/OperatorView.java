@@ -14,23 +14,22 @@ public class OperatorView extends CommonView {
         Printer.printlnBlue("*    OPERATOR DASHBOARD    *");
         Printer.printlnBlue("*********************************\n");
         Printer.printlnBlue("*** What should I do for you? ***\n");
-        Printer.printlnBlue("1) Interaction");
-        Printer.printlnBlue("2) Write notes");
-        Printer.printlnBlue("3) Call notes");
-        Printer.printlnBlue("4) Add appointment");
-        Printer.printlnBlue("5) Show customers");
-        Printer.printlnBlue("6) Show offers");
-        Printer.printlnBlue("7) Show appointments");
-        Printer.printlnBlue("8) Quit");
+        Printer.printlnBlue("1) Write notes");
+        Printer.printlnBlue("2) Call notes");
+        Printer.printlnBlue("3) Add appointment");
+        Printer.printlnBlue("4) Show customers");
+        Printer.printlnBlue("5) Show offers");
+        Printer.printlnBlue("6) Show appointments");
+        Printer.printlnBlue("7) Quit");
         Printer.printlnBlue("*********************************\n");
 
         int choice;
         do {
             choice = inputInt(new BufferedReader(new InputStreamReader(System.in)));
-            if (choice < 1 || choice > 8) {
+            if (choice < 1 || choice > 7) {
                 Printer.errorPrint("Invalid choice. Please select a number between 1 and 6.");
             }
-        } while (choice < 1 || choice > 8);
+        } while (choice < 1 || choice > 7);
 
         return choice;
 

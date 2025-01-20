@@ -10,26 +10,36 @@ public class Note {
     private String description;
     private String operator;
     private LocalDate date;
-    private String time;
+    private Time time;
     private String customerName;
     private String customerSurname;
     private Date appointmentDate;
     private Time appointmentTime;
     private String appointmentBranch;
+    private String offer;
 
     public Note() {
     }
 
-    public Note(Boolean outcome, String description, String customer) {
+    public Note(Boolean outcome, String description, String customer, String operator, LocalDate date, Time time, String offer) {
         this.outcome = outcome;
         this.description = description;
         this.customer = customer;
+        this.operator = operator;
+        this.date = date;
+        this.time = time;
+        this.offer = offer;
     }
     public void setOperator(String operator) {
         this.operator = operator;
     }
     public void setDate(LocalDate date) {this.date = date;}
-    public void setTime(String time) {this.time = time;}
+    public LocalDate getDate() {return date;}
+    public String getOperator() {return operator;}
+    public String getOffer() {return offer;}
+    public void setOffer(String offer) {this.offer = offer;}
+    public Time getTime() {return time;}
+    public void setTime(Time time) {this.time = time;}
     public Boolean getOutcome() {
         return outcome;
     }
@@ -52,14 +62,17 @@ public class Note {
     public void setAppointmentTime(Time appointmentTime) {this.appointmentTime = appointmentTime;}
     public void setAppointmentBranch(String appointmentBranch) {this.appointmentBranch = appointmentBranch;}
 
+
+
     @Override
     public String toString() {
         return "--------------------"+ customerName+ customerSurname+ "'s notes--------------------" +
-                "\n |Outcome: " + (Boolean.TRUE.equals(outcome) ? "accepted" : "refused") + "|" +
-                "\n |Description: " + description + "|" +
-                "\n |Date: " + date + "|" +
-                "\n |Time: " + time + "|" +
-                "\n |Operator: " + operator + "|" +
-                "\n |Appointment: " + (appointmentBranch == null ? "none" : appointmentBranch + " on " + appointmentDate + " at " + appointmentTime) + "|";
+                "\nOutcome: " + (Boolean.TRUE.equals(outcome) ? "Accepted" : "Refused") +
+                "\nDescription: " + description +
+                "\nOperator: " + operator +
+                "\nDate: " + date +
+                "\nTime: " + time +
+                "\nOffer: " + offer +
+                "\nAppointment: " + (appointmentBranch == null ? "No appointment" : appointmentBranch + " on " + appointmentDate + " at " + appointmentTime);
     }
 }

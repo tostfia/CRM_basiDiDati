@@ -4,6 +4,7 @@ package it.crm.bd.model.dao;
 import it.crm.bd.exception.DAOException;
 import it.crm.bd.model.domain.Note;
 
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,25 +43,21 @@ public class ReportNoteProcedureDAO implements GenericProcedureDAO<List<Note>> {
                         Note note = new Note();
                         note.setOutcome(rs.getBoolean("nota_risultato"));
                         note.setDescription(rs.getString("nota_dettagli"));
+                        note.setOperator(rs.getString("opeartore_interazione"));
                         note.setDate(rs.getDate("data_interazione").toLocalDate());
-                        note.setTime(rs.getTime("ora_interazione").toLocalTime().toString());
-                        note.setOperator(rs.getString("operatore_interazione"));
+                        note.setTime(rs.getTime("ora_interazione"));
+                        note.setOffer(rs.getString("offerta_scelta"));
                         note.setCustomerName(rs.getString("cliente_nome"));
                         note.setCustomerSurname(rs.getString("cliente_cognome"));
-                        //se non c'è appuntamento non setto i seguenti campi
-                        String branch = rs.getString("appuntamento_sede");
-                        Date date = rs.getDate("appuntamento_data");
-                        Time time = rs.getTime("appuntamento_ora");
-                        if (branch != null && date != null && time != null) {
-                            note.setAppointmentBranch(branch);
-                            note.setAppointmentDate(date);
-                            note.setAppointmentTime(time);
+                        if(rs.getDate("appuntamento_data") != null && rs.getTime("appuntamento_ora") != null && rs.getString("appuntamento_sede") != null){
+                            note.setAppointmentDate(rs.getDate("appuntamento_data"));
+                            note.setAppointmentTime(rs.getTime("appuntamento_ora"));
+                            note.setAppointmentBranch(rs.getString("appuntamento_sede"));
                         }else{
-                            note.setAppointmentBranch(null);
                             note.setAppointmentDate(null);
                             note.setAppointmentTime(null);
+                            note.setAppointmentBranch(null);
                         }
-
 
                         // Aggiunta alla lista
                         notes.add(note);

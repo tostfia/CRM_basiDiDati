@@ -5,7 +5,6 @@ import it.crm.bd.model.dao.*;
 import it.crm.bd.model.domain.*;
 import it.crm.bd.other.Printer;
 import it.crm.bd.view.AppointmentView;
-import it.crm.bd.view.InteractionView;
 import it.crm.bd.view.NoteView;
 import it.crm.bd.view.OperatorView;
 
@@ -31,38 +30,18 @@ public class OperatoreController implements Controller {
                 throw new LoadException("Error while showing menu: "+e.getMessage(),e);
             }
             switch(choice){
-                case 1-> interaction();
-                case 2-> writeNotes();
-                case 3-> callNotes();
-                case 4-> addAppointment();
-                case 5-> showCustomers();
-                case 6-> showOffers();
-                case 7-> showAppointments();
-                case 8-> System.exit(0);
+                case 1-> writeNotes();
+                case 2-> callNotes();
+                case 3-> addAppointment();
+                case 4-> showCustomers();
+                case 5-> showOffers();
+                case 6-> showAppointments();
+                case 7-> System.exit(0);
                 default -> throw new InputException("Invalid choice.");
             }
         }
     }
-    //Annoto l'interazione
-    public void interaction() throws InputException, DataBaseOperationException {
-        Interaction interaction;
-        try{
-            // Step 1: Creazione dell'interazione tramite vista
-            interaction= InteractionView.insertInteraction();
-        }catch (IOException e){
-            // Gestione errore input/output
-            throw new InputException("Error while creating interaction from input: "+e.getMessage(),e);
-        }
-        try(Connection conn= ConnectionFactory.getConnection(Role.OPERATORE)){
-            // Step 2: Inserimento dell'interazione nel database tramite DAO
-            InsertInteractionProcedureDAO interactionDAO= new InsertInteractionProcedureDAO();
-            interactionDAO.execute(interaction,conn);
-            Printer.printBlue("Interaction successfully inserted into the database.");
-        }catch (IOException | SQLException |DAOException e){
-            // Gestione errore DAO
-            throw new DataBaseOperationException("Error while inserting interaction into the database: "+e.getMessage(),e);
-        }
-    }
+
     //Scrivo i dettagli della nota
     public void writeNotes() throws DataBaseOperationException, InputException {
         Note note;
