@@ -14,7 +14,7 @@ public class AppointmentView extends CommonView {
     public static Appointment scheduleAppointment() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Printer.printlnBlue("\n---------------Schedule Appointment---------------\n");
-        String customer = inputString(reader, "Customer");
+        String customer = inputString(reader, "Customer (Please enter the customer's fiscal code, you will find it in -showCustomers-)");
         String branch = inputString(reader, "Branch");
         LocalDate date = inputDate(reader, "Date (YYYY-MM-DD)");
         Time time = inputTime(reader);

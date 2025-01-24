@@ -43,7 +43,7 @@ public class ReportNoteProcedureDAO implements GenericProcedureDAO<List<Note>> {
                         Note note = new Note();
                         note.setOutcome(rs.getBoolean("nota_risultato"));
                         note.setDescription(rs.getString("nota_dettagli"));
-                        note.setOperator(rs.getString("opeartore_interazione"));
+                        note.setOperator(rs.getString("operatore_interazione"));
                         note.setDate(rs.getDate("data_interazione").toLocalDate());
                         note.setTime(rs.getTime("ora_interazione"));
                         note.setOffer(rs.getString("offerta_scelta"));

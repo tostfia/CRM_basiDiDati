@@ -17,12 +17,12 @@ public class NoteView extends CommonView{
     public static Note writeNotes() throws IOException, DataBaseOperationException {
         BufferedReader reader = new BufferedReader(new java.io.InputStreamReader(System.in));
         Printer.printlnBlue("\n---------------Write Notes---------------\n");
-        String customer = inputString(reader, "Customer");
+        String customer = inputString(reader, "Customer (Please enter the customer's fiscal code, you will find it in -showCustomers-)");
         LocalDate date = inputDate(reader, "Date (YYYY-MM-DD)");
         Time time = inputTime(reader);
         Printer.print("\nWhich offer do you have proposed?");
         controller.showOffers();
-        String offer = inputString(reader, "Insert the offer description");
+        String offer = inputString(reader, "\nInsert the offer description");
         String operator = inputString(reader, "Operator");
         Boolean outcome = inputBoolean(reader);
         String description = inputString(reader, "Description");

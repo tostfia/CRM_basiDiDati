@@ -26,6 +26,6 @@ public class Offer {
     public String toString() {
         return "\n----------Offers----------" +
                 "\n|type:" + type +"|"+
-                "\n|description:'" + description + "|"+'\'' ;
+                "\n|description:'" + description + "|'";
     }
 }
