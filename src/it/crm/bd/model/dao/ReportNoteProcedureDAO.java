@@ -2,6 +2,7 @@ package it.crm.bd.model.dao;
 
 
 import it.crm.bd.exception.DAOException;
+import it.crm.bd.model.domain.Appointment;
 import it.crm.bd.model.domain.Note;
 
 
@@ -50,13 +51,9 @@ public class ReportNoteProcedureDAO implements GenericProcedureDAO<List<Note>> {
                         note.setCustomerName(rs.getString("cliente_nome"));
                         note.setCustomerSurname(rs.getString("cliente_cognome"));
                         if(rs.getDate("appuntamento_data") != null && rs.getTime("appuntamento_ora") != null && rs.getString("appuntamento_sede") != null){
-                            note.setAppointmentDate(rs.getDate("appuntamento_data"));
-                            note.setAppointmentTime(rs.getTime("appuntamento_ora"));
-                            note.setAppointmentBranch(rs.getString("appuntamento_sede"));
+                            note.setAppointment(new Appointment( rs.getString("appuntamento_sede"), rs.getDate("appuntamento_data").toLocalDate(), rs.getTime("appuntamento_ora")));
                         }else{
-                            note.setAppointmentDate(null);
-                            note.setAppointmentTime(null);
-                            note.setAppointmentBranch(null);
+                            note.setAppointment(null);
                         }
 
                         // Aggiunta alla lista
