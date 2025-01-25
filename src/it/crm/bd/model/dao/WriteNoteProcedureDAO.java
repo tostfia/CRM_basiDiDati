@@ -2,7 +2,7 @@ package it.crm.bd.model.dao;
 
 import it.crm.bd.exception.DAOException;
 import it.crm.bd.model.domain.Note;
-import it.crm.bd.model.domain.OffersType;
+
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -26,7 +26,7 @@ public class WriteNoteProcedureDAO implements GenericProcedureDAO<Note> {
             }
 
             // Ottieni la connessione
-            try (CallableStatement cs = conn.prepareCall("{call writeNote(?,?,?,?,?,?,?)}")) {
+            try (CallableStatement cs = conn.prepareCall("{call writeNote(?,?,?,?,?,?,?,?,?,?)}")) {
 
                 // Imposta i parametri per la stored procedure
                 cs.setBoolean(1, note.getOutcome());
@@ -36,6 +36,15 @@ public class WriteNoteProcedureDAO implements GenericProcedureDAO<Note> {
                 cs.setDate(5, Date.valueOf(note.getDate()));
                 cs.setString(6, note.getOperator());
                 cs.setString(7, note.getOffer());
+                if(note.getAppointment() != null) {
+                    cs.setString(8, note.getAppointment().getBranch());
+                    cs.setDate(9, Date.valueOf(note.getAppointment().getDate()));
+                    cs.setTime(10, note.getAppointment().getTime());
+                } else {
+                    cs.setString(8, null);
+                    cs.setDate(9, null);
+                    cs.setTime(10, null);
+                }
 
 
                 // Esegui la stored procedure

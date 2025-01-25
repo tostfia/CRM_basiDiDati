@@ -16,7 +16,7 @@ public class OperatorView extends CommonView {
         Printer.printlnBlue("*** What should I do for you? ***\n");
         Printer.printlnBlue("1) Write notes");
         Printer.printlnBlue("2) Call notes");
-        Printer.printlnBlue("3) Add appointment");
+        Printer.printlnBlue("3) Add appointment to notes");
         Printer.printlnBlue("4) Show customers");
         Printer.printlnBlue("5) Show offers");
         Printer.printlnBlue("6) Show appointments");

@@ -2,7 +2,6 @@ package it.crm.bd.model.domain;
 
 import java.sql.Time;
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Note {
     private String customer;
@@ -13,15 +12,12 @@ public class Note {
     private Time time;
     private String customerName;
     private String customerSurname;
-    private Date appointmentDate;
-    private Time appointmentTime;
-    private String appointmentBranch;
     private String offer;
+    private Appointment appointment;
 
     public Note() {
     }
-
-    public Note(Boolean outcome, String description, String customer, String operator, LocalDate date, Time time, String offer) {
+    public Note(Boolean outcome, String description, String customer, String operator, LocalDate date, Time time, String offer, Appointment appointment) {
         this.outcome = outcome;
         this.description = description;
         this.customer = customer;
@@ -29,7 +25,9 @@ public class Note {
         this.date = date;
         this.time = time;
         this.offer = offer;
+        this.appointment = appointment;
     }
+
     public void setOperator(String operator) {
         this.operator = operator;
     }
@@ -58,9 +56,12 @@ public class Note {
     public void setCustomer(String customer) {
         this.customer = customer;
     }
-    public void setAppointmentDate(Date appointmentDate) {this.appointmentDate = appointmentDate;}
-    public void setAppointmentTime(Time appointmentTime) {this.appointmentTime = appointmentTime;}
-    public void setAppointmentBranch(String appointmentBranch) {this.appointmentBranch = appointmentBranch;}
+    public Appointment getAppointment() {
+        return appointment;
+    }
+    public void setAppointment(Appointment appointment) {
+        this.appointment = appointment;
+    }
 
 
 
@@ -73,6 +74,6 @@ public class Note {
                 "\nDate: " + date +
                 "\nTime: " + time +
                 "\nOffer: " + offer +
-                "\nAppointment: " + (appointmentBranch == null ? "No appointment" : appointmentBranch + " on " + appointmentDate + " at " + appointmentTime);
+                "\nAppointment: " + (appointment== null ? "No appointment" : appointment.getBranch() + " on " + appointment.getDate() + " at " + appointment.getTime());
     }
 }

@@ -19,6 +19,12 @@ public class Appointment {
 
     public Appointment() {}
 
+    public Appointment(String branch, LocalDate appointmentDate, Time appointmentTime) {
+        this.branch = branch;
+        this.date = appointmentDate;
+        this.time = appointmentTime;
+    }
+
     public String getCustomer() {
         return customer;
     }

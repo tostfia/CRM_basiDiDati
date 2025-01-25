@@ -87,12 +87,12 @@ public class OperatoreController implements Controller {
         }
     }
     //Aggiungo un appuntamento
-    public void addAppointment() throws DataBaseOperationException, LoadException {
+    public void addAppointment() throws DataBaseOperationException, InputException {
         Appointment appointment;
         try{
             appointment= AppointmentView.scheduleAppointment();
         }catch(IOException e){
-            throw new LoadException("Error while creating appointment from input: "+e.getMessage(),e);
+            throw new InputException("Error while creating appointment from input: "+e.getMessage(),e);
         }
         try(Connection conn= ConnectionFactory.getConnection(Role.OPERATORE)){
             InsertAppointmentProcedureDAO appointmentDAO= new InsertAppointmentProcedureDAO();
