@@ -27,7 +27,7 @@ public class OperatorView extends CommonView {
         do {
             choice = inputInt(new BufferedReader(new InputStreamReader(System.in)));
             if (choice < 1 || choice > 7) {
-                Printer.errorPrint("Invalid choice. Please select a number between 1 and 6.");
+                Printer.errorPrint("Invalid choice. Please select a number between 1 and 7.");
             }
         } while (choice < 1 || choice > 7);
 

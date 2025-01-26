@@ -1,7 +1,6 @@
 package it.crm.bd.view;
 
-import it.crm.bd.controller.SegreteriaController;
-import it.crm.bd.exception.DataBaseOperationException;
+
 import it.crm.bd.model.domain.Contact;
 import it.crm.bd.model.domain.Customer;
 import it.crm.bd.other.Printer;
@@ -15,7 +14,7 @@ import java.util.List;
 
 public class CustomerView  extends CommonView{
     public CustomerView() {super();}
-    private static final String FISCAL_CODE="Fiscal code";
+    private static final String FISCAL_CODE="\nFiscal code";
     private static final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
     public static Customer insertCustomer() throws IOException {
@@ -95,9 +94,10 @@ public class CustomerView  extends CommonView{
         }
 
         Printer.print("Existing contacts:");
-        int index = 1;
+        int count = 1;
         for (Contact contact : contacts) {
-            Printer.print(index++ + ". " + contact.toString());
+            Printer.print("\n"+ count +  ". " + contact.toString());
+            count++;
         }
 
         String choice = inputString(reader,"\nEnter the number of the contact you want to update");
@@ -159,19 +159,7 @@ public class CustomerView  extends CommonView{
         }
         return date;
     }
-
-    public static String deleteCustomer() throws IOException, DataBaseOperationException {
-        Printer.printBlue("\n-----------Delete customer-----------");
-        SegreteriaController controller = new SegreteriaController();
-        controller.showCustomer();
-        Printer.print("\nEnter the fiscal code of the customer you want to delete:");
-        String fiscalCode = reader.readLine().trim();
-        if (fiscalCode.isEmpty()) {
-            throw new IOException("Fiscal code cannot be empty.");
-        }
-        return fiscalCode;
-
-    }
+    //Metodo per la scelta del cliente
 }
 
 

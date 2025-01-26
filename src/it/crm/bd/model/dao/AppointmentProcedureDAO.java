@@ -13,7 +13,7 @@ import java.util.List;
 public class AppointmentProcedureDAO implements GenericProcedureDAO<List<Appointment>>{
     @Override
     public List<Appointment> execute(Object... params) throws SQLException, DAOException {
-        if(params.length!=2 ||!(params[0] instanceof Connection conn)){
+        if(params.length!=1 ||!(params[0] instanceof Connection conn)){
             throw new IllegalArgumentException("Invalid number of parameters.");
         }
         if(conn.isClosed()){

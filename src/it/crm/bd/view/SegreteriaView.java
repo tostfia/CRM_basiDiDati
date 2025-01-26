@@ -31,6 +31,7 @@ public class SegreteriaView extends CommonView {
             }
         } while (choice < 1 || choice > 9);
 
+
         return choice;
 
     }

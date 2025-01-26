@@ -53,7 +53,7 @@ public class Appointment {
     public void setOperator(String operator) {this.operator = operator;}
     @Override
     public String toString() {
-        return "--------Appointment--------\n" +
+        return "\n--------Appointment--------\n" +
                 "|Customer: " + customer + "|\n" +
                 "|Date: " + date + "|\n" +
                 "|Time: " + time + "|\n" +
