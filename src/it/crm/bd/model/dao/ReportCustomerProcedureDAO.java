@@ -46,7 +46,7 @@ public class ReportCustomerProcedureDAO implements GenericProcedureDAO<List<Repo
                         // Gestione del tipo di offerta: modificato per gestire più tipi separati da virgola
                         String offerTypes = rs.getString("tipi_offerte_accettate");
                         if (offerTypes == null || offerTypes.isEmpty()) {
-                            reportCustomer.setAcceptedOffersType("Unknown");
+                            reportCustomer.setAcceptedOffersType("No offers accepted");
                         } else {
                             reportCustomer.setAcceptedOffersType(offerTypes);
                         }
