@@ -24,11 +24,11 @@ public class AppointmentProcedureDAO implements GenericProcedureDAO<List<Appoint
             try(ResultSet rs=cs.executeQuery()){
                 while(rs.next()){
                     Appointment a= new Appointment();
-                    a.setCustomer(rs.getString("Customer"));
-                    a.setBranch(rs.getString("Branch"));
-                    a.setDate(rs.getDate("Date").toLocalDate());
-                    a.setTime(rs.getTime("Time"));
-                    a.setOperator(rs.getString("Operator"));
+                    a.setCustomer(rs.getString("Cliente"));
+                    a.setBranch(rs.getString("Sede"));
+                    a.setDate(rs.getDate("Data").toLocalDate());
+                    a.setTime(rs.getTime("Ora"));
+                    a.setOperator(rs.getString("Operatore"));
                     appointments.add(a);
                 }
             }
