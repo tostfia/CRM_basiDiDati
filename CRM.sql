@@ -37,7 +37,7 @@ CREATE TABLE `appuntamento` (
   KEY `fk_appuntamento_interazione1_idx` (`interazione_idinterazione`),
   CONSTRAINT `fk_appuntamento_cliente1` FOREIGN KEY (`cliente_codicefiscale`) REFERENCES `cliente` (`codicefiscale`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_appuntamento_interazione1` FOREIGN KEY (`interazione_idinterazione`) REFERENCES `interazione` (`idinterazione`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,7 +46,7 @@ CREATE TABLE `appuntamento` (
 
 LOCK TABLES `appuntamento` WRITE;
 /*!40000 ALTER TABLE `appuntamento` DISABLE KEYS */;
-INSERT INTO `appuntamento` VALUES ('Scraton','2025-01-27','15:30:00',1,'VRDSRA90M08H501Z',12),('Scraton','2025-01-31','11:00:00',2,'NRICLD95B51Z404Z',15);
+INSERT INTO `appuntamento` VALUES ('Scraton','2025-01-27','15:30:00',1,'VRDSRA90M08H501Z',12),('Scraton','2025-01-31','11:00:00',2,'NRICLD95B51Z404Z',15),('Roma','2025-02-10','10:30:00',3,'NRICLD95B51Z404Z',17);
 /*!40000 ALTER TABLE `appuntamento` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -164,7 +164,7 @@ CREATE TABLE `cliente` (
   `cognome` varchar(45) NOT NULL,
   `dataDiNascita` datetime NOT NULL,
   `dataDiRegistrazione` datetime NOT NULL,
-  `segreteria_idsegreteria` varchar(45) NOT NULL,
+  `segreteria` varchar(45) NOT NULL,
   PRIMARY KEY (`codicefiscale`),
   UNIQUE KEY `codice fiscale_UNIQUE` (`codicefiscale`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
@@ -176,7 +176,7 @@ CREATE TABLE `cliente` (
 
 LOCK TABLES `cliente` WRITE;
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-INSERT INTO `cliente` VALUES ('NRICLD95B51Z404Z','Claudia','Neri','1995-01-16 00:00:00','2025-01-20 00:00:00','mario_rossi'),('SCTMHL64C15F205Z','Michael','Scott','1964-03-15 00:00:00','2025-01-24 00:00:00','mario_rossi'),('VRDSRA90M08H501Z','Sara','Verdi','1990-08-08 00:00:00','2025-01-20 00:00:00','mario_rossi');
+INSERT INTO `cliente` VALUES ('NRICLD95B51Z404Z','Claudia','Neri','1995-01-16 00:00:00','2025-01-20 00:00:00','mario_rossi'),('PRTGCM56D26L949X','Giacomo','Poretti','1956-04-15 00:00:00','2025-01-30 00:00:00','giovanni_storti'),('SCTMHL64C15F205Z','Michael','Scott','1964-03-15 00:00:00','2025-01-24 00:00:00','mario_rossi'),('VRDSRA90M08H501Z','Sara','Verdi','1990-08-08 00:00:00','2025-01-20 00:00:00','mario_rossi');
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -224,7 +224,7 @@ CREATE TABLE `contatti` (
 
 LOCK TABLES `contatti` WRITE;
 /*!40000 ALTER TABLE `contatti` DISABLE KEYS */;
-INSERT INTO `contatti` VALUES ('3215709358','phone','NRICLD95B51Z404Z'),('3339229987','phone','VRDSRA90M08H501Z'),('3339229998','phone','NRICLD95B51Z404Z'),('3458847836','phone','SCTMHL64C15F205Z'),('claudia@gmail.com','email','NRICLD95B51Z404Z'),('michael@gmail.com','email','SCTMHL64C15F205Z'),('sara@gmail.com','email','VRDSRA90M08H501Z'),('scott@gmail.com','email','SCTMHL64C15F205Z'),('verdi@gmail.com','email','VRDSRA90M08H501Z');
+INSERT INTO `contatti` VALUES ('3215709358','phone','NRICLD95B51Z404Z'),('3339229987','phone','VRDSRA90M08H501Z'),('3339229998','phone','NRICLD95B51Z404Z'),('338','phone','PRTGCM56D26L949X'),('3458847836','phone','SCTMHL64C15F205Z'),('5709346','phone','PRTGCM56D26L949X'),('claudia@gmail.com','email','NRICLD95B51Z404Z'),('giacomo@gmail.com','email','PRTGCM56D26L949X'),('michael@gmail.com','email','SCTMHL64C15F205Z'),('sara@gmail.com','email','VRDSRA90M08H501Z'),('scott@gmail.com','email','SCTMHL64C15F205Z'),('verdi@gmail.com','email','VRDSRA90M08H501Z');
 /*!40000 ALTER TABLE `contatti` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -291,13 +291,12 @@ DROP TABLE IF EXISTS `indirizzi`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `indirizzi` (
   `via` varchar(25) NOT NULL,
-  `cap` varchar(5) NOT NULL,
+  `cap` varchar(25) NOT NULL,
   `città` varchar(25) NOT NULL,
   `cliente_codicefiscale` varchar(25) NOT NULL,
   PRIMARY KEY (`cliente_codicefiscale`),
   UNIQUE KEY `via_UNIQUE` (`via`),
-  UNIQUE KEY `città_UNIQUE` (`città`),
-  UNIQUE KEY `cap_UNIQUE` (`cap`),
+  UNIQUE KEY `via` (`via`),
   CONSTRAINT `fk_indirizzi_cliente1` FOREIGN KEY (`cliente_codicefiscale`) REFERENCES `cliente` (`codicefiscale`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -308,7 +307,7 @@ CREATE TABLE `indirizzi` (
 
 LOCK TABLES `indirizzi` WRITE;
 /*!40000 ALTER TABLE `indirizzi` DISABLE KEYS */;
-INSERT INTO `indirizzi` VALUES ('via milano 1','00021','Milano','NRICLD95B51Z404Z'),('scraton number 1','00130','Scraton','SCTMHL64C15F205Z'),('via del corso 1','00001','Roma','VRDSRA90M08H501Z');
+INSERT INTO `indirizzi` VALUES ('via milano 1','00021','Milano','NRICLD95B51Z404Z'),('via roma 1','00021','Milano','PRTGCM56D26L949X'),('scraton number 1','00130','Scraton','SCTMHL64C15F205Z'),('via del corso 1','00001','Roma','VRDSRA90M08H501Z');
 /*!40000 ALTER TABLE `indirizzi` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -401,7 +400,7 @@ CREATE TABLE `interazione` (
   KEY `idx_interazione_cliente_offerta` (`cliente_codicefiscale`,`offerta_idofferta`,`risultato`),
   CONSTRAINT `fk_interazione_cliente1` FOREIGN KEY (`cliente_codicefiscale`) REFERENCES `cliente` (`codicefiscale`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_interazione_offerta1` FOREIGN KEY (`offerta_idofferta`) REFERENCES `offerta` (`idofferta`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -410,7 +409,7 @@ CREATE TABLE `interazione` (
 
 LOCK TABLES `interazione` WRITE;
 /*!40000 ALTER TABLE `interazione` DISABLE KEYS */;
-INSERT INTO `interazione` VALUES (11,'2025-01-23 00:00:00','15:00:00','bruno_bianchi',13,'VRDSRA90M08H501Z',0,'Non è andata a buon fine'),(12,'2025-01-24 00:00:00','10:00:00','jim_halpert',13,'VRDSRA90M08H501Z',1,'Ho riproposto ha cambiato idea'),(13,'2025-01-24 00:00:00','15:00:00','jim_halpert',14,'VRDSRA90M08H501Z',1,'Daje'),(14,'2025-01-24 00:00:00','15:00:00','bruno_bianchi',14,'SCTMHL64C15F205Z',1,'Andata a buon fine'),(15,'2025-01-24 00:00:00','10:30:00','jim_halpert',13,'NRICLD95B51Z404Z',0,'Rifiutata ma vorrebbe un appuntamento');
+INSERT INTO `interazione` VALUES (11,'2025-01-23 00:00:00','15:00:00','bruno_bianchi',13,'VRDSRA90M08H501Z',0,'Non è andata a buon fine'),(12,'2025-01-24 00:00:00','10:00:00','jim_halpert',13,'VRDSRA90M08H501Z',1,'Ho riproposto ha cambiato idea'),(13,'2025-01-24 00:00:00','15:00:00','jim_halpert',14,'VRDSRA90M08H501Z',1,'Daje'),(14,'2025-01-24 00:00:00','15:00:00','bruno_bianchi',14,'SCTMHL64C15F205Z',1,'Andata a buon fine'),(15,'2025-01-24 00:00:00','10:30:00','jim_halpert',13,'NRICLD95B51Z404Z',0,'Rifiutata ma vorrebbe un appuntamento'),(17,'2025-01-30 00:00:00','11:00:00','bruno_bianchi',16,'NRICLD95B51Z404Z',0,'Non andata a buon fine');
 /*!40000 ALTER TABLE `interazione` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -531,7 +530,7 @@ CREATE TABLE `offerta` (
   `descrizione` varchar(100) NOT NULL,
   PRIMARY KEY (`idofferta`),
   UNIQUE KEY `idofferta_UNIQUE` (`idofferta`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -540,7 +539,7 @@ CREATE TABLE `offerta` (
 
 LOCK TABLES `offerta` WRITE;
 /*!40000 ALTER TABLE `offerta` DISABLE KEYS */;
-INSERT INTO `offerta` VALUES (11,1,''),(12,4,'Premio della lotteria'),(13,2,'Sconto del 30% per i nuovi clienti'),(14,1,'Fino al 31 gennaio sconti del 50% sulla vecchia collezione'),(15,3,'Regalo il giorno del compleanno dei clienti');
+INSERT INTO `offerta` VALUES (11,1,''),(12,4,'Premio della lotteria'),(13,2,'Sconto del 30% per i nuovi clienti'),(14,1,'Fino al 31 gennaio sconti del 50% sulla vecchia collezione'),(15,3,'Regalo il giorno del compleanno dei clienti'),(16,2,'Sconto del 50%');
 /*!40000 ALTER TABLE `offerta` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -579,10 +578,8 @@ CREATE TABLE `users` (
   `username` varchar(45) NOT NULL,
   `password` char(32) NOT NULL,
   `role` enum('SEGRETERIA','OPERATORE') NOT NULL,
-  `idutente` int NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`username`),
-  UNIQUE KEY `idutente` (`idutente`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
+  PRIMARY KEY (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -591,7 +588,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('bruno_bianchi','7c6a180b36896a0a8c02787eeafb0e4c','OPERATORE',6),('jim_halpert','5f4dcc3b5aa765d61d8327deb882cf99','OPERATORE',7),('mario_rossi','5f4dcc3b5aa765d61d8327deb882cf99','SEGRETERIA',5);
+INSERT INTO `users` VALUES ('bruno_bianchi','7c6a180b36896a0a8c02787eeafb0e4c','OPERATORE'),('giovanni_storti','5f4dcc3b5aa765d61d8327deb882cf99','SEGRETERIA'),('jim_halpert','5f4dcc3b5aa765d61d8327deb882cf99','OPERATORE'),('mario_rossi','5f4dcc3b5aa765d61d8327deb882cf99','SEGRETERIA');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -762,6 +759,7 @@ BEGIN
         c.cognome AS cliente_cognome,
         c.dataDiNascita AS cliente_data_nascita,
         c.dataDiRegistrazione AS cliente_data_di_registrazione,
+        c.segreteria AS cliente_segreteria,
         cont.valore AS contatto_valore,
         cont.tipo AS contatto_tipo,
         addr.via AS indirizzo_via,
@@ -946,7 +944,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insertCustomer`(
 )
 BEGIN
     -- Dichiarazione di variabili locali
-    DECLARE segreteria_count INT;
     DECLARE cliente_count INT;
 
     -- Gestione degli errori
@@ -974,7 +971,7 @@ BEGIN
     END IF;
 
     -- Inserimento del cliente
-    INSERT INTO cliente (codicefiscale, nome, cognome, dataDiNascita, segreteria_idsegreteria)
+    INSERT INTO cliente (codicefiscale, nome, cognome, dataDiNascita, segreteria)
     VALUES (var_codiceFiscale, var_nome, var_cognome, var_dataDiNascita, var_segreteria);
 
     -- Inserimento dell'indirizzo
@@ -1125,25 +1122,26 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `login`(
     OUT var_role INT
 )
 BEGIN
-    DECLARE var_user_role ENUM('SEGRETERIA','OPERATORE');
+    DECLARE var_user_role ENUM('SEGRETERIA', 'OPERATORE') DEFAULT NULL;
+
+    -- Inizializza il parametro OUT per evitare problemi JDBC
+    SET var_role = -1;  
 
     -- Seleziona il ruolo dell'utente dalla tabella users
-    SELECT role
-    INTO var_user_role
+    SELECT role INTO var_user_role
     FROM users
-    WHERE username = var_username AND `password` = md5(var_pass);
-    
+    WHERE username = var_username AND `password` = MD5(var_pass);
 
-
-			-- Assegna il valore del ruolo all'output var_role
-			if var_user_role='SEGRETERIA' then 
-				set var_role=1;
-            elseif var_user_role='OPERATORE' then
-				set var_role=2;
-            else
-				set var_role=3; -- Se il ruolo non è riconosciuto
-			end if;
-
+    -- Controlla se l'utente è stato trovato
+    IF var_user_role IS NOT NULL THEN
+        IF var_user_role = 'SEGRETERIA' THEN 
+            SET var_role = 1;
+        ELSEIF var_user_role = 'OPERATORE' THEN
+            SET var_role = 2;
+        END IF;
+    ELSE
+        SET var_role = 0; -- Nessun utente trovato
+    END IF;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1684,4 +1682,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-29 18:57:57
+-- Dump completed on 2025-01-30 13:36:32
