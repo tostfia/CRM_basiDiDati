@@ -72,6 +72,7 @@ public class CustomerProcedureDAO implements GenericProcedureDAO<List<Customer>>
                         newCustomer.setAddress(rs.getString("indirizzo_via"));
                         newCustomer.setCity(rs.getString("indirizzo_citta"));
                         newCustomer.setCap(rs.getString("indirizzo_cap"));
+                        newCustomer.setSegreteria(rs.getString("cliente_segreteria"));
                         customers.add(newCustomer);
                     }catch(SQLException e){
                         Printer.errorPrint("Error while mapping customer: " + e.getMessage());

@@ -93,9 +93,9 @@ public class Customer {
     }
     public void setCap(String cap) {this.cap = cap;}
     public List<String> getEmails() {return emails;}
-    public LocalDate getRegistrationDate() {return registrationDate;}
     public void setRegistrationDate(LocalDate registrationDate) {this.registrationDate = registrationDate;}
     public String getSegreteria() {return segreteria;}
+    public void setSegreteria(String segreteria) {this.segreteria = segreteria;}
 
     // toString per la stampa dell'oggetto
     @Override
@@ -111,7 +111,7 @@ public class Customer {
                 "\nCAP: " + cap +
                 "\nEmails: " + emails +
                 "\nRegistration Date: " + registrationDate +
-                "\nSegreteria: " + segreteria;
+                "\nWho entered this customer :" + segreteria;
     }
 
 

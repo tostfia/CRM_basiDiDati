@@ -24,7 +24,8 @@ public class LoginProcedureDAO implements GenericProcedureDAO<Credentials> {
 
         // Ottieni la connessione
         try (Connection conn = ConnectionFactory.getLoginConnection();
-             CallableStatement cs = conn.prepareCall("{call login(?,?,?)}")) {
+             CallableStatement cs = conn.prepareCall("{call login(? , ?, ?)}")) {
+
 
             // Imposta i parametri della stored procedure
             cs.setString(1, username);

@@ -68,7 +68,8 @@ public class CustomerView  extends CommonView{
             String[] emailArray = email.split("[,;\\s]+");
             for(String e : emailArray) {
                 if (e.isEmpty()) {
-                    Printer.print("Invalid email format: " + email);
+                    Printer.errorPrint("Invalid email format: " + email);
+                    Printer.print("Please enter a valid email address.");
                 } else {
                     emails.add(e);
                 }
