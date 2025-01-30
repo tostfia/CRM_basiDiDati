@@ -588,7 +588,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('bruno_bianchi','7c6a180b36896a0a8c02787eeafb0e4c','OPERATORE'),('giovanni_storti','5f4dcc3b5aa765d61d8327deb882cf99','SEGRETERIA'),('jim_halpert','5f4dcc3b5aa765d61d8327deb882cf99','OPERATORE'),('mario_rossi','5f4dcc3b5aa765d61d8327deb882cf99','SEGRETERIA');
+INSERT INTO `users` VALUES ('bruno_bianchi','7c6a180b36896a0a8c02787eeafb0e4c','OPERATORE'),('giovanni_storti','5f4dcc3b5aa765d61d8327deb882cf99','SEGRETERIA'),('jim_halpert','5f4dcc3b5aa765d61d8327deb882cf99','OPERATORE'),('mario_rossi','5f4dcc3b5aa765d61d8327deb882cf99','SEGRETERIA'),('sara_iacobelli','5f4dcc3b5aa765d61d8327deb882cf99','OPERATORE');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -792,32 +792,22 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAppointment`()
 BEGIN 
-	-- Handler per le eccezioni SQL
+    -- Handler per le eccezioni SQL
     DECLARE EXIT HANDLER FOR SQLEXCEPTION 
     BEGIN 
-		ROLLBACK;
         RESIGNAL;
     END;
 
     -- Imposta il livello di isolamento per una transazione
-    SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+    SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
 
-    -- Avvia la transazione
-    START TRANSACTION;
-
-    -- Seleziona le informazioni degli appuntamenti
-    SELECT distinct
-        a.sede AS Branch,
-        a.ora AS Time,
-        a.data AS Date,
-        a.cliente_codicefiscale AS Customer,
-        i.operatore AS Operator
+    -- Seleziona le informazioni degli appuntamenti, senza duplicati
+    SELECT DISTINCT a.cliente_codicefiscale AS Cliente,a.data AS Data,a.sede AS Sede, a.ora AS Ora, i.operatore AS Operatore
     FROM appuntamento AS a
-    JOIN interazione AS i 
-        ON a.cliente_codicefiscale = i.cliente_codicefiscale;
+    JOIN interazione AS i
+        ON i.idinterazione = a.interazione_idinterazione
+    ORDER BY a.data DESC;
 
-    
-    COMMIT;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1682,4 +1672,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-30 13:36:32
+-- Dump completed on 2025-01-30 14:34:02
