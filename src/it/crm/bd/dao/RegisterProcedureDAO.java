@@ -1,8 +1,8 @@
-package it.crm.bd.model.dao;
+package it.crm.bd.dao;
 
 import it.crm.bd.exception.DAOException;
-import it.crm.bd.model.domain.Credentials;
-import it.crm.bd.model.domain.Role;
+import it.crm.bd.model.Credentials;
+import it.crm.bd.other.Role;
 
 import java.io.IOException;
 import java.sql.CallableStatement;

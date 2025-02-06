@@ -1,9 +1,11 @@
-package it.crm.bd.model.domain;
+package it.crm.bd.model;
+
+import it.crm.bd.other.Role;
 
 public class Credentials {
     private  String username;
     private  String password;
-    private  Role role;
+    private Role role;
     public Credentials(String username, String password, Role role) {
         this.username = username;
         this.password = password;

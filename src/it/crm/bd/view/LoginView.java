@@ -1,6 +1,6 @@
 package it.crm.bd.view;
 
-import it.crm.bd.model.domain.Credentials;
+import it.crm.bd.model.Credentials;
 import it.crm.bd.other.Printer;
 
 import java.io.BufferedReader;

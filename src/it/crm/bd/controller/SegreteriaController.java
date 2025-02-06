@@ -1,9 +1,11 @@
 package it.crm.bd.controller;
 
 import it.crm.bd.exception.*;
-import it.crm.bd.model.dao.*;
+import it.crm.bd.dao.*;
+import it.crm.bd.model.*;
 import it.crm.bd.model.domain.*;
 import it.crm.bd.other.Printer;
+import it.crm.bd.other.Role;
 import it.crm.bd.view.CustomerView;
 import it.crm.bd.view.OfferView;
 import it.crm.bd.view.SegreteriaView;

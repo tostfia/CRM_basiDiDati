@@ -1,7 +1,7 @@
 package it.crm.bd.view;
 
-import it.crm.bd.model.domain.Offer;
-import it.crm.bd.model.domain.OffersType;
+import it.crm.bd.model.Offer;
+import it.crm.bd.other.OffersType;
 import it.crm.bd.other.Printer;
 
 import java.io.BufferedReader;

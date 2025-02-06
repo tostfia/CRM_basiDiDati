@@ -1,4 +1,4 @@
-package it.crm.bd.model.domain;
+package it.crm.bd.other;
 
 public enum Role {
     SEGRETERIA(1),

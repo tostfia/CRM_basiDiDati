@@ -2,8 +2,8 @@ package it.crm.bd.view;
 
 import it.crm.bd.controller.OperatoreController;
 import it.crm.bd.exception.DataBaseOperationException;
-import it.crm.bd.model.domain.Appointment;
-import it.crm.bd.model.domain.Note;
+import it.crm.bd.model.Appointment;
+import it.crm.bd.model.Note;
 import it.crm.bd.other.Printer;
 
 import java.io.BufferedReader;

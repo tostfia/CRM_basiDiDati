@@ -1,4 +1,4 @@
-package it.crm.bd.model.domain;
+package it.crm.bd.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

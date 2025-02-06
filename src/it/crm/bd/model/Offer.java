@@ -1,4 +1,6 @@
-package it.crm.bd.model.domain;
+package it.crm.bd.model;
+
+import it.crm.bd.other.OffersType;
 
 public class Offer {
     private OffersType type;

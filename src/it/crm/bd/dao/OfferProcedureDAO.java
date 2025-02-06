@@ -1,8 +1,8 @@
-package it.crm.bd.model.dao;
+package it.crm.bd.dao;
 
 import it.crm.bd.exception.DAOException;
-import it.crm.bd.model.domain.Offer;
-import it.crm.bd.model.domain.OffersType;
+import it.crm.bd.model.Offer;
+import it.crm.bd.other.OffersType;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;

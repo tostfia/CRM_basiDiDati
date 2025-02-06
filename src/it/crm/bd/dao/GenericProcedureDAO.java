@@ -1,4 +1,4 @@
-package it.crm.bd.model.dao;
+package it.crm.bd.dao;
 
 import it.crm.bd.exception.DAOException;
 

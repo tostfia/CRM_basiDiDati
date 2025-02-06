@@ -1,8 +1,8 @@
 package it.crm.bd.view;
 
 
-import it.crm.bd.model.domain.Contact;
-import it.crm.bd.model.domain.Customer;
+import it.crm.bd.model.Contact;
+import it.crm.bd.model.Customer;
 import it.crm.bd.other.Printer;
 
 import java.io.BufferedReader;

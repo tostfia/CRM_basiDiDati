@@ -1,8 +1,8 @@
 package it.crm.bd.controller;
 
 import it.crm.bd.exception.DAOException;
-import it.crm.bd.model.dao.LoginProcedureDAO;
-import it.crm.bd.model.domain.Credentials;
+import it.crm.bd.dao.LoginProcedureDAO;
+import it.crm.bd.model.Credentials;
 import it.crm.bd.other.Printer;
 import it.crm.bd.view.LoginView;
 

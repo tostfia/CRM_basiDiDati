@@ -1,7 +1,7 @@
-package it.crm.bd.model.dao;
+package it.crm.bd.dao;
 
 import it.crm.bd.exception.DAOException;
-import it.crm.bd.model.domain.ReportCustomer;
+import it.crm.bd.model.ReportCustomer;
 
 import java.sql.*;
 import java.time.LocalDate;

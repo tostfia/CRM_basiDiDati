@@ -1,5 +1,5 @@
-package it.crm.bd.model.dao;
-import it.crm.bd.model.domain.Role;
+package it.crm.bd.dao;
+import it.crm.bd.other.Role;
 
 import java.io.FileInputStream;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package it.crm.bd.model.domain;
+package it.crm.bd.model;
 
 import java.sql.Time;
 import java.time.LocalDate;

@@ -1,4 +1,4 @@
-package it.crm.bd.model.domain;
+package it.crm.bd.model;
 
 public class ReportCustomer {
     private String fiscalCode;
